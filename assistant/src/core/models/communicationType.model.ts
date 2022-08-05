@@ -1,0 +1,1 @@
+export type CommunicationType = 'voice' | 'text';
