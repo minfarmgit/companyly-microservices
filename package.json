@@ -5,9 +5,9 @@
   "scripts": {
     "postinstall": "npm install --prefix ./assistant && npm install --prefix ./sync && npm install --prefix ./webrtc",
     "dev": "nodemon",
-    "assistant:dev": "npm run dev --prefix ./assistant",
-    "sync:dev": "npm run dev --prefix ./sync",
-    "webrtc:dev": "npm run dev --prefix ./webrtc",
+    "assistant:exec": "ts-node ./assistant/src/index.ts",
+    "sync:exec": "ts-node ./sync/src/server.ts",
+    "webrtc:exec": "ts-node ./webrtc/src/server.ts",
     "build": "npm run build --prefix ./assistant && npm run build --prefix ./sync && npm run build --prefix ./webrtc",
     "start": "npm run start --prefix ./assistant && npm run start --prefix ./sync && npm run start --prefix ./webrtc"
   },

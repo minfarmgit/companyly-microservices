@@ -5,5 +5,5 @@
     "**/src/**/*.spec.ts",
     "assistant/aiTrainig/"
   ],
-  "exec": "ts-node ./assistant/src/index.ts && ts-node ./sync/src/server.ts && ts-node ./webrtc/src/server.ts"
+  "exec": "npm-run-all --parallel assistant:exec sync:exec webrtc:exec"
 }
