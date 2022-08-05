@@ -6,7 +6,7 @@ import cors  from "cors";
 import fs from "fs";
 import { Server } from "socket.io";
 import { SyncStatesService } from "./syncStates/syncStates.service";
-import { environment } from "./env";
+import { environment, dev as devMode } from "./env";
 import bodyParser from "body-parser";
 
 dotenv.config();
@@ -21,7 +21,7 @@ const appHttp: Express = express();
 appHttp.use(cors());
 appHttp.use(bodyParser.json());
 
-const dev: boolean = process.env.npm_lifecycle_script === 'nodemon';
+const dev: boolean = devMode;
 
 if (dev) {
     console.log('Running in dev mode');

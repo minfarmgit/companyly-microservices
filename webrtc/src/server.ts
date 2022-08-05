@@ -13,7 +13,7 @@ import { CreateRoomData } from "./room/room.model";
 import { NewMessageDto } from "./room/dto/new-message.dto";
 import { UpdateMemberDto } from "./room/dto/update-member.dto";
 import { UpdateRoomDto } from "./room/dto/update-room.dto";
-import { environment } from "./env";
+import { environment, dev as devMode } from "./env";
 
 dotenv.config();
 
@@ -25,7 +25,7 @@ appSocket.use(cors());
 const appPeer: Express = express();
 appPeer.use(cors());
 
-const dev: boolean = process.env.npm_lifecycle_script === 'nodemon';
+const dev: boolean = devMode;
 
 if (dev) {
     console.log('Running in dev mode');
