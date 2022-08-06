@@ -20,7 +20,7 @@ export class AiAction extends Action {
     async loadModel(): Promise<any> {
         return  await bkLabs.nlu.loadModel(
             `file://.${dev ? '/assistant' : ''}/aiTraining/models/${config.modelId}/model.json`,
-            `${process.cwd()}${dev ? '/assistant' : '/dist'}/aiTraining/models/${config.modelId}/model_metadata.json`,
+            `${process.cwd()}${dev ? '/assistant' : ''}/aiTraining/models/${config.modelId}/model_metadata.json`,
             () => {
                 console.log('loaded Model!');
             }
