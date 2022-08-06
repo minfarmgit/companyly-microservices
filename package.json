@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "assistant:exec": "ts-node ./assistant/src/index.ts",
+    "assistant:start": "npm run start --prefix ./assistant",
+    "sync:exec": "ts-node ./sync/src/server.ts",
+    "sync:start": "npm run start --prefix ./sync",
+    "webrtc:exec": "ts-node ./webrtc/src/server.ts",
+    "webrtc:start": "npm run start --prefix ./webrtc",
     "postinstall": "npm install --prefix ./assistant && npm install --prefix ./sync && npm install --prefix ./webrtc",
     "dev": "nodemon",
-    "assistant:exec": "ts-node ./assistant/src/index.ts",
-    "sync:exec": "ts-node ./sync/src/server.ts",
-    "webrtc:exec": "ts-node ./webrtc/src/server.ts",
     "build": "npm run build --prefix ./assistant && npm run build --prefix ./sync && npm run build --prefix ./webrtc",
-    "start": "npm run start --prefix ./assistant && npm run start --prefix ./sync && npm run start --prefix ./webrtc"
+    "start": "npm-run-all --parallel assistant:start sync:start webrtc:start"
   },
   "repository": {
     "type": "git",
@@ -22,12 +25,12 @@
   },
   "homepage": "https://github.com/minfarmgit/companyly-microservices#readme",
   "devDependencies": {
-    "npm-run-all": "^4.1.5",
     "@types/express": "^4.17.13",
     "@types/node": "^18.0.3",
     "@types/simple-peer": "^9.11.4",
     "@types/string-similarity": "^4.0.0",
     "nodemon": "^2.0.19",
+    "npm-run-all": "^4.1.5",
     "ts-node": "^10.8.2",
     "typescript": "^4.7.4"
   }

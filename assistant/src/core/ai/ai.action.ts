@@ -4,6 +4,7 @@ import { config } from "../../config";
 import { RoomCore } from "../meeting/room.core";
 import { CommunicationType } from "../models/communicationType.model";
 import { emitResponse } from "../utils/emitResponse";
+import { dev } from "../../env";
 
 export class AiAction extends Action {
 
@@ -18,8 +19,8 @@ export class AiAction extends Action {
 
     async loadModel(): Promise<any> {
         return  await bkLabs.nlu.loadModel(
-            `file://./assistant/aiTraining/models/${config.modelId}/model.json`,
-            `./assistant/aiTraining/models/${config.modelId}/model_metadata.json`,
+            `file://.${dev ? '/assistant' : '/dist'}/aiTraining/models/${config.modelId}/model.json`,
+            `${process.cwd()}${dev ? '/assistant' : '/dist'}/aiTraining/models/${config.modelId}/model_metadata.json`,
             () => {
                 console.log('loaded Model!');
             }

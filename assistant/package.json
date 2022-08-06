@@ -5,9 +5,10 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "nodemon",
-    "build": "tsc",
+    "build": "tsc && npm run cpModels",
     "start": "node dist/index.js",
-    "train": "ts-node aiTraining/train.ts"
+    "train": "ts-node aiTraining/train.ts",
+    "cpModels": "copyfiles aiTraining/models/**/* dist/"
   },
   "author": "zidiks",
   "license": "ISC",
@@ -16,6 +17,7 @@
     "@types/node": "^18.0.3",
     "@types/simple-peer": "^9.11.4",
     "@types/string-similarity": "^4.0.0",
+    "copyfiles": "^2.4.1",
     "nodemon": "^2.0.19",
     "ts-node": "^10.8.2",
     "typescript": "^4.7.4"

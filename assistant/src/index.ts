@@ -26,15 +26,17 @@ socket.on(ProtocolToClient.INVITED_ASSISTANT, (roomId: string, botId: string) =>
         const room: RoomPrev | undefined = meetingCore.roomsValue.find((room: RoomPrev) => room.id === roomId);
         if (room && room.membersCount > 0) {
             setTimeout(() => {
-                const newRoom: RoomCore = connectToRoom(room, meetingCore, botId);
-                rooms.set(roomId, newRoom);
+                const newRoom: RoomCore | undefined = connectToRoom(room, meetingCore, botId);
+                if (newRoom) {
+                    rooms.set(roomId, newRoom);
+                }
             }, 1000);
         }
     }, 3000);
 });
 
 socket.on(ProtocolToClient.KICKED_ASSISTANT, (roomId: string) => {
-    const room: RoomCore = rooms.get(roomId);
+    const room: RoomCore | undefined = rooms.get(roomId);
     if (room) {
         room.destroy(false);
         rooms.delete(roomId);
