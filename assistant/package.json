@@ -8,7 +8,7 @@
     "build": "tsc && npm run cpModels",
     "start": "node dist/index.js",
     "train": "ts-node aiTraining/train.ts",
-    "cpModels": "copyfiles aiTraining/models/**/* dist/"
+    "cpModels": "npx copyfiles aiTraining/models/**/* dist/"
   },
   "author": "zidiks",
   "license": "ISC",
