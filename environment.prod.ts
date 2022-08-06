@@ -3,7 +3,7 @@ export const environment = {
 
   webrtcPeerPort: 3001,
   webrtcSocketPort: 3002,
-  webrtcSocketSecure:true,
+  webrtcSocketSecure: true,
 
   syncSocketPort: 3004,
   syncHttpPort: 3005,
