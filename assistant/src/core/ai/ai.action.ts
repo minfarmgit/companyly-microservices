@@ -22,7 +22,7 @@ export class AiAction extends Action {
             `file://.${dev ? '/assistant' : ''}/aiTraining/models/${config.modelId}/model.json`,
             `${process.cwd()}${dev ? '/assistant' : ''}/aiTraining/models/${config.modelId}/model_metadata.json`,
             () => {
-                console.log('loaded Model!');
+                console.log('[Assistant][AI] loaded Model!');
             }
         );
     }

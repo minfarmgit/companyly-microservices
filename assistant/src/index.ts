@@ -69,5 +69,5 @@ function connectToRoom(room: RoomPrev, meetingCore: MeetingCore, botId: string):
 }
 
 socket.on("connect", () => {
-    console.log(socket.id);
+    console.log(`[Assistant][Socket] Connected to webrtc with id: ${socket.id}`);
 });

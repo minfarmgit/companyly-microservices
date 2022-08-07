@@ -28,7 +28,7 @@ appPeer.use(cors());
 const dev: boolean = devMode;
 
 if (dev) {
-    console.log('Running in dev mode');
+    console.log('[Webrtc][All] Running in dev mode');
 }
 
 const serverSocket = dev ? createServerHttp(appSocket) : createServerHttps({
@@ -126,10 +126,10 @@ io.on(SocketProtocol.connection, (socket: Socket) => {
 });
 
 serverSocket.listen(portSocket, () => {
-    console.log(`Socket server listening at port:${portSocket}`);
+    console.log(`[Webrtc][Socket] Server listening at port:${portSocket}`);
 });
 serverPeer.listen(portPeer, () => {
-    console.log(`Peer server listening at port:${portPeer}`);
+    console.log(`[Webrtc][Peer] Server listening at port:${portPeer}`);
 });
 
 

@@ -24,7 +24,7 @@ appHttp.use(bodyParser.json());
 const dev: boolean = devMode;
 
 if (dev) {
-    console.log('Running in dev mode');
+    console.log('[Sync][All] Running in dev mode');
 }
 
 const serverSocket = dev ? createServerHttp(appSocket) : createServerHttps({
@@ -46,9 +46,9 @@ const io = new Server(serverSocket, {
 const syncStatesService = new SyncStatesService(io, appHttp);
 
 serverSocket.listen(portSocket, () => {
-    console.log(`Socket server listening at port:${portSocket}`);
+    console.log(`[Sync][Socket] Server listening at port:${portSocket}`);
 });
 
 serverHttp.listen(portHttp, () => {
-    console.log(`Http server listening at port:${portHttp}`);
+    console.log(`[Sync][Http] Server listening at port:${portHttp}`);
 });

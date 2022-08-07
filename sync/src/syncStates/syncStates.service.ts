@@ -35,7 +35,7 @@ export class SyncStatesService {
 
     private listenHttp(): void {
         this.httpServer.post('/meeting_invite', (req, res) => {
-            console.log('new invite: ', req.body);
+            console.log('[Sync][Http] New invite: ', req.body);
             res.sendStatus(200);
         });
     }

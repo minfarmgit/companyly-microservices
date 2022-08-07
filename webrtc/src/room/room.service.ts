@@ -77,7 +77,7 @@ export class RoomService {
     }
 
     public connectedClient(socket: Socket): void {
-        console.log('[Socket server] Connected client');
+        console.log('[Webrtc][Socket] Connected client');
         socket.emit(ProtocolToClient.ROOMS_LIST, JSON.stringify(this.roomsListToRoomsPrevList(this.roomsList)));
     }
 
@@ -95,7 +95,7 @@ export class RoomService {
                                 code: ServerMessageTypes.DISCONNECTED,
                                 message: `You connected from other device.`,
                             }));
-                            console.log('[Socket server] disconnected member: ', oldMember.userId);
+                            console.log('[Webrtc][Socket] disconnected member: ', oldMember.userId);
                             oldSocket.leave(roomId);
                             oldMember.socketId = socket.id;
                             oldMember.mainPeerId = data.mainPeerId;
@@ -145,7 +145,7 @@ export class RoomService {
                     this.sendRooms();
                     this.sendRoom(roomId);
                     this.pushSystemMessage(room, `${data.name} присоединился`);
-                    console.log('[Socket server] joined member: ', data.userId);
+                    console.log('[Webrtc][Socket] joined member: ', data.userId);
                 }, 100);
             }
             if (room.privateMode) {
@@ -177,7 +177,7 @@ export class RoomService {
     }
 
     public leaveMember(socket: Socket, roomId: string, userId: string): void {
-        console.log('[Socket server] leave member: ', userId);
+        console.log('[Webrtc][Socket] leave member: ', userId);
         const room: Room | undefined = this.roomsList.get(roomId);
         if (room) {
             const member: Member | undefined = room.members.get(userId);
@@ -216,7 +216,7 @@ export class RoomService {
     }
 
     public createRoom(data: CreateRoomData): void {
-        console.log('[Socket server] created room: ', data.name);
+        console.log('[Webrtc][Socket] created room: ', data.name);
         const roomId = uuid();
         this.roomsList.set(
             roomId,
@@ -242,7 +242,6 @@ export class RoomService {
             if (member && socket.id === member.socketId && room.moderators.has(member.userId.toString())) {
                 data.invites.forEach((invite: string) => {
                     if (!room.invites.has(invite)) {
-                        console.log('post');
                         axios.post(`${environment.host}:${environment.syncHttpPort}/meeting_invite`, {
                             testData: 'test'
                         });
@@ -261,7 +260,7 @@ export class RoomService {
                 this.sendRooms();
                 this.sendRoom(roomId);
             } else {
-                console.log('[Socket server] Action not allowed!');
+                console.log('[Webrtc][Socket] Action not allowed!');
             }
         }
     }
@@ -269,7 +268,7 @@ export class RoomService {
     public deleteRoom(roomId: string): void {
         const room: Room | undefined = this.roomsList.get(roomId);
         if (room) {
-            console.log(`[Socket server] delete  room in ${DELETE_ROOM_DELAY}ms: `, room.name);
+            console.log(`[Webrtc][Socket] delete room in ${DELETE_ROOM_DELAY}ms: `, room.name);
             setTimeout(() => {
                 if (room.members.size === 0) {
                     this.roomsList.delete(roomId);
@@ -290,7 +289,7 @@ export class RoomService {
                 text: data.text,
                 sendTime: new Date().getTime(),
             }
-            console.log('[Socket server] new message from: ', data.userId);
+            console.log('[Webrtc][Socket] new message from: ', data.userId);
             room.messages.push(message);
             room.messages = room.messages.sort((messageA: Message, messageB: Message) => messageA.sendTime - messageB.sendTime);
             this.sendMessages(roomId);
@@ -317,7 +316,7 @@ export class RoomService {
             text,
             sendTime: new Date().getTime(),
         }
-        console.log('[Socket server] new system message: ', text);
+        console.log('[Webrtc][Socket] new system message: ', text);
         room.messages.push(message);
         room.messages = room.messages.sort((messageA: Message, messageB: Message) => messageA.sendTime - messageB.sendTime);
         this.sendMessages(room.id);
@@ -328,7 +327,7 @@ export class RoomService {
         if (room) {
             const roomBot = Array.from(room.members.values()).find((member: Member) => member.bot);
             if (!roomBot) {
-                console.log('[Socket server] invite assistant');
+                console.log('[Webrtc][Socket] invite assistant');
                 const botId: string = uuid();
                 room.invites.add(botId);
                 this.sendRooms();
@@ -343,7 +342,7 @@ export class RoomService {
         if (room) {
             const roomBot = Array.from(room.members.values()).find((member: Member) => member.bot);
             if (roomBot) {
-                console.log('[Socket server] kick assistant');
+                console.log('[Webrtc][Socket] kick assistant');
                 room.invites.delete(roomBot.userId);
                 this.sendRooms();
                 this.sendRoom(roomId);

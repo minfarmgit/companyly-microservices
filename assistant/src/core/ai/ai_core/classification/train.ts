@@ -19,7 +19,7 @@ export class BerkeliumClassificationTrain {
     TRAIN_EPOCHS: number = config.trainEpochs;
 
     constructor() {
-        console.log('\n\x1b[0m\x1b[37m\x1b[44m BerkeliumLabs \x1b[0m', '\x1b[0m Welcome!\n');
+        console.log('[Assistant][AI] \x1b[0m\x1b[37m\x1b[44m BerkeliumLabs \x1b[0m', '\x1b[0m Welcome!');
     }
 
     initializeData(datasetPath: fs.PathOrFileDescriptor, outputFolder: string) {
@@ -28,11 +28,11 @@ export class BerkeliumClassificationTrain {
             this.INTENT_DATA = JSON.parse(rawData.toString());
             this.INTENT_DATA.pop();
             this.__OUTDIR = outputFolder;
-            console.log('Data Loaded Successfully');
+            console.log('[Assistant][AI] Data Loaded Successfully');
 
             this.getClasses(this.INTENT_DATA);
         } catch (error) {
-            console.log('Data read error: ', error);
+            console.log('[Assistant][AI] Data read error: ', error);
         }
     }
 
@@ -43,12 +43,12 @@ export class BerkeliumClassificationTrain {
             .then(model => {
                 return model.embed(sentences)
                     .then(embeddings => {
-                        console.log(`${data.length} inputs encoded.`);
+                        console.log(`[Assistant][AI] ${data.length} inputs encoded.`);
                         return embeddings;
                     });
             })
             .catch(err => console.error('Fit Error:', err));
-        console.log(`Data Encoding Started: ${data.length} inputs`);
+        console.log(`[Assistant][AI] Data Encoding Started: ${data.length} inputs`);
 
         return trainingData
     }
@@ -125,7 +125,7 @@ export class BerkeliumClassificationTrain {
                 verbose: 0,
                 callbacks: {
                     onEpochEnd: async (epoch, logs) => {
-                        console.log('\x1b[0m\x1b[34mEpoch: ' + (epoch + 1) + '\x1b[35m | Loss: ' + logs?.loss.toFixed(5) +
+                        console.log('[Assistant][AI] \x1b[0m\x1b[34mEpoch: ' + (epoch + 1) + '\x1b[35m | Loss: ' + logs?.loss.toFixed(5) +
                             '\x1b[33m | Accuracy: ' + logs?.acc.toFixed(5));
                     }
                 }
@@ -136,12 +136,12 @@ export class BerkeliumClassificationTrain {
                 const finalLoss = info.history.loss[infoIndex].toFixed(5);
                 // @ts-ignore
                 const finalAcc = info.history.acc[infoIndex].toFixed(5);
-                console.log('\x1b[0m\x1b[37m\x1b[44m BuddhiNLP \x1b[0m', '\x1b[32m Training Completed at \x1b[0m' +
+                console.log('[Assistant][AI] \x1b[0m\x1b[37m\x1b[44m BuddhiNLP \x1b[0m', '\x1b[32m Training Completed at \x1b[0m' +
                     '==>\x1b[0m\x1b[35m Loss: ' + finalLoss + '\x1b[33m | Accuracy: ' + finalAcc + '\x1b[0m');
 
                 this.saveModelData(model);
             });
-        }).catch(err => console.log('Prom Err:', err));
+        }).catch(err => console.log('[Assistant][AI] Prom Err:', err));
 
     }
 
