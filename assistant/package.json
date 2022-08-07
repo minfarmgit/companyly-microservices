@@ -5,10 +5,12 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "nodemon",
-    "build": "tsc && npm run cpModels",
+    "build": "npm run clDist && tsc && npm run cpData",
     "start": "node dist/index.js",
     "train": "ts-node aiTraining/train.ts",
-    "cpModels": "npx copyfiles aiTraining/models/**/* dist/"
+    "rimraf": "./node_modules/rimraf/bin.js",
+    "clDist" : "rimraf dist/",
+    "cpData": "npx copyfiles aiTraining/models/**/* dist/ && npx copyfiles -f src/core/geo/russia/* dist/core/geo/russia/"
   },
   "author": "zidiks",
   "license": "ISC",
@@ -19,6 +21,7 @@
     "@types/string-similarity": "^4.0.0",
     "copyfiles": "^2.4.1",
     "nodemon": "^2.0.19",
+    "rimraf": "^3.0.2",
     "ts-node": "^10.8.2",
     "typescript": "^4.7.4"
   },
