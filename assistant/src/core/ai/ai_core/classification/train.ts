@@ -37,7 +37,7 @@ export class BerkeliumClassificationTrain {
     }
 
     encodeData(data: any[]) {
-        console.log(data);
+        console.log('[Assistant][AI] ', data);
         const sentences = data.map(intents => intents.toLowerCase());
         const trainingData = use.load()
             .then(model => {

@@ -210,7 +210,7 @@ export class RoomCore {
       ).subscribe((res: string) => {
         try {
           const resObject: MemberJoinedDto= JSON.parse(res);
-          console.log('connected user: ', resObject.userId);
+          console.log('[Assistant][Socket] connected user: ', resObject.userId);
         } catch (e) {
           console.log(e);
         }

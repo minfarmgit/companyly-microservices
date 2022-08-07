@@ -58,7 +58,7 @@ function connectToRoom(room: RoomPrev, meetingCore: MeetingCore, botId: string):
             }
         });
         meetingCore.serverEvents.fromUserVoice.subscribe((newMessage: string) => {
-            console.log('speech: ', newMessage);
+            console.log('[Assistant][Socket] Speech: ', newMessage);
             if (newMessage && !newMessage.toLowerCase().includes('сфера присоединился') && (newMessage.toLowerCase().includes('сфера') || newMessage.toLowerCase().includes('sfera'))) {
                 assistant.request(roomCore, 'voice', newMessage.toLowerCase().replace('сфера', '').replace('sfera', ''));
             }
