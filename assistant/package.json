@@ -9,7 +9,7 @@
     "start": "node dist/index.js",
     "train": "ts-node aiTraining/train.ts",
     "rimraf": "./node_modules/rimraf/bin.js",
-    "clDist" : "rimraf dist/",
+    "clDist": "rimraf dist/",
     "cpData": "npx copyfiles aiTraining/models/**/* dist/ && npx copyfiles -f src/core/geo/russia/* dist/core/geo/russia/"
   },
   "author": "zidiks",

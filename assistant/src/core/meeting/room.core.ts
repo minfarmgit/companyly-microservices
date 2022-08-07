@@ -14,6 +14,7 @@ import { ServerMessageConnectedDto } from "./dto/server-message-connected.dto";
 import { ServerMessageRequestKeyDto } from "./dto/server-message-request-key.dto";
 import { config } from "../../config";
 import { UserProfile } from "./models/profile.model";
+import { UpdateRoomDto } from "./dto/update-room.dto";
 
 const MAIN_SPEAKER_DELAY = 3000;
 export class RoomCore {
@@ -216,6 +217,22 @@ export class RoomCore {
         }
       });
     }
+  }
+
+  public updateInvites(data: string[]): void {
+    const room = this.roomValue;
+    if (room) {
+      this.updateRoom({
+        name: room.name,
+        privateMode: room.privateMode,
+        invites: data,
+        moderators: room.moderators,
+      })
+    }
+  }
+
+  public updateRoom(data: UpdateRoomDto): void {
+    this.meetingCore.updateRoom(this.roomId, data, this.userProfile);
   }
 
   public destroy(joinFromOtherDevice: boolean): void {

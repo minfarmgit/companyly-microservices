@@ -8,6 +8,7 @@ export interface Config {
     socketAPI: string;
     socketSecure: boolean;
     avatar: string;
+    botToken?: string;
     name: string[];
     speech?: {
         rate: number,

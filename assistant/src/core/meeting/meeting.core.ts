@@ -7,6 +7,8 @@ import { CreateRoomDto } from "./dto/create-room.dto";
 import { JoinMemberDto } from "./dto/join-member.dto";
 import { NewMessageDto } from "./dto/new-message.dto";
 import { UpdateMemberDto } from "./dto/update-member.dto";
+import { UpdateRoomDto } from "./dto/update-room.dto";
+import { UserProfile } from "./models/profile.model";
 
 export class MeetingCore {
 
@@ -59,6 +61,10 @@ export class MeetingCore {
 
   public createRoom(data: CreateRoomDto): void {
     this.socket.emit(ProtocolToServer.CREATE_ROOM, JSON.stringify(data));
+  }
+
+  public updateRoom(roomId: string, data: UpdateRoomDto, userProfile: UserProfile): void {
+    this.socket.emit(ProtocolToServer.UPDATE_ROOM, JSON.stringify(data), roomId, userProfile.userId);
   }
 
   public joinMember(roomId: string, data: JoinMemberDto, key?: string): void {

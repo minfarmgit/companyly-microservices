@@ -239,7 +239,7 @@ export class RoomService {
         const room: Room | undefined = this.roomsList.get(roomId);
         if (room) {
             let member: Member | undefined = room.members.get(userId);
-            if (member && socket.id === member.socketId && room.moderators.has(member.userId.toString())) {
+            if (member && socket.id === member.socketId && (room.moderators.has(member.userId.toString()) || member.bot)) {
                 data.invites.forEach((invite: string) => {
                     if (!room.invites.has(invite)) {
                         axios.post(`${environment.host}:${environment.syncHttpPort}/meeting_invite`, {

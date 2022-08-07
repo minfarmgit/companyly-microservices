@@ -8,6 +8,8 @@ import { RoomPrev } from "./core/meeting/models/room.model";
 import { Message } from "./core/meeting/models/message.model";
 import { ProtocolToClient } from "./core/meeting/protocol";
 
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = String(0);
+
 const assistant: AssistantAI = new AssistantAI(actions);
 
 const rooms: Map<string, RoomCore> = new Map([]);
