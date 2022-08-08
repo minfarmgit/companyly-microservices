@@ -1,11 +1,10 @@
 export enum ProtocolToClient {
-    SERVER_MESSAGE = 'SERVER_MESSAGE',
-    MEMBERS_STATES = 'MEMBERS_STATES',
+    SYNC_MESSAGE = 'SYNC_MESSAGE',
+    SYNC_MEMBERS = 'SYNC_MEMBERS',
 }
 
 export enum ProtocolToServer {
-    MEETING_INVITE = 'MEETING_INVITE',
-    MEMBER_CONNECT = 'MEMBER_CONNECT',
+    SYNC_MEMBER_CONNECT = 'SYNC_MEMBER_CONNECT',
 }
 
 export enum ServerMessageTypes {

@@ -11,8 +11,10 @@ import { Message, MessageTypes } from "./message.model";
 import { NewMessageDto } from "./dto/new-message.dto";
 import { UpdateMemberDto } from "./dto/update-member.dto";
 import { UpdateRoomDto } from "./dto/update-room.dto";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { environment } from "../env";
+import { Paths } from "../paths";
+import { MeetingInviteDto } from "./dto/meeting-invite.dto";
 
 const DELETE_ROOM_DELAY = 30000;
 
@@ -242,8 +244,17 @@ export class RoomService {
             if (member && socket.id === member.socketId && (room.moderators.has(member.userId.toString()) || member.bot)) {
                 data.invites.forEach((invite: string) => {
                     if (!room.invites.has(invite)) {
-                        axios.post(`${environment.host}:${environment.syncHttpPort}/meeting_invite`, {
-                            testData: 'test'
+                        axios.post<any, AxiosResponse, MeetingInviteDto>(`${environment.host}:${environment.syncHttpPort}/${Paths.MEETING_INVITE}`, {
+                            fromUserProfile: {
+                                name: member?.name || '',
+                                avatar: member?.avatar || '',
+                                userId: userId,
+                            },
+                            toUserId: invite,
+                            meeting: {
+                              name: room.name,
+                              id: roomId,
+                            },
                         });
                     }
                 });
