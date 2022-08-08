@@ -23,7 +23,6 @@ export class SyncStatesService {
 
             socket.on(SocketProtocol.disconnect, () => {
                 const user = Array.from(this.members.values()).find((member: Member) => member.socketId === socket.id);
-                console.log('Disconnect ', user);
                 if (user) {
                     this.disconnectMember(user.userId.toString());
                     this.emitSyncMembers();
@@ -58,11 +57,9 @@ export class SyncStatesService {
 
     private disconnectMember(userId: string): void {
         this.members.delete(userId.toString());
-        console.log(this.members);
     }
 
     public emitSyncMembers(): void {
-        console.log('Emit sync members: ', Array.from(this.members.keys()));
         this.socketServer.emit(ProtocolToClient.SYNC_MEMBERS, JSON.stringify(Array.from(this.members.keys())));
     }
 
