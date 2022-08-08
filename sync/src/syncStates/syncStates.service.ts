@@ -22,8 +22,12 @@ export class SyncStatesService {
         this.socketServer.on(SocketProtocol.connection, (socket: Socket) => {
 
             socket.on(SocketProtocol.disconnect, () => {
-                this.disconnectMember(socket.id);
-                this.emitSyncMembers();
+                const user = Array.from(this.members.values()).find((member: Member) => member.socketId === socket.id);
+                console.log('Disconnect ', user);
+                if (user) {
+                    this.disconnectMember(user.userId.toString());
+                    this.emitSyncMembers();
+                }
             });
 
             socket.on(ProtocolToServer.SYNC_MEMBER_CONNECT, (userId: string) => {
@@ -52,12 +56,14 @@ export class SyncStatesService {
         console.log(`[Sync][Socket] Connected client ${member.userId}`);
     }
 
-    private disconnectMember(socketId: string): void {
-        this.members.delete(socketId);
+    private disconnectMember(userId: string): void {
+        this.members.delete(userId.toString());
+        console.log(this.members);
     }
 
     public emitSyncMembers(): void {
-        this.socketServer.emit(ProtocolToClient.SYNC_MEMBERS, JSON.stringify(Object.fromEntries(this.members.entries())));
+        console.log('Emit sync members: ', Array.from(this.members.keys()));
+        this.socketServer.emit(ProtocolToClient.SYNC_MEMBERS, JSON.stringify(Array.from(this.members.keys())));
     }
 
     public emitServerMessage<T>(type: ServerMessageTypes, recipient: string | null, data?: T): void {
