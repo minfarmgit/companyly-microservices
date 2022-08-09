@@ -203,6 +203,7 @@ export class RoomCore {
       } else {
         this.meetingCore.joinMember(this.roomId, registerMemberObject);
       }
+      this.toggleMic();
       setTimeout(() => {
          this.sendVoice('Всем привет!');
       }, 5000);
@@ -247,14 +248,10 @@ export class RoomCore {
   }
 
   public toggleMic(): void {
-    const lastVal = this.myAudioTrack?.enabled;
-    if (this.myAudioTrack !== undefined) {
-      this.myAudioTrack.enabled = !lastVal;
-      this.meetingCore.updateMember(this.roomId, {
-        userId: this.userProfile.userId,
-        micState: !lastVal,
-      });
-    }
+    this.meetingCore.updateMember(this.roomId, {
+      userId: this.userProfile.userId,
+      micState: true,
+    });
   }
 
   public toggleCam(): void {
