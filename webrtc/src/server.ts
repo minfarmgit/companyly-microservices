@@ -15,6 +15,8 @@ import { UpdateMemberDto } from "./room/dto/update-member.dto";
 import { UpdateRoomDto } from "./room/dto/update-room.dto";
 import { environment, dev as devMode } from "./env";
 
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = String(0);
+
 dotenv.config();
 
 const portSocket = environment.webrtcSocketPort;
