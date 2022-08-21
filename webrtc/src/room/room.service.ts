@@ -104,6 +104,7 @@ export class RoomService {
                             oldMember.sharePeerId = undefined;
                             oldMember.camState = false;
                             oldMember.micState = false;
+                            oldMember.guest = data.guest;
                             oldMember.screenShare = false;
                             room.members.set(oldMember.userId, oldMember);
                             this.sendRooms();
@@ -118,6 +119,9 @@ export class RoomService {
                     name: data.name,
                     avatar: data.avatar,
                 };
+                if (data.guest) {
+                    memberData.guest = true;
+                }
                 if (data.bot) {
                     memberData.bot = true;
                 }
