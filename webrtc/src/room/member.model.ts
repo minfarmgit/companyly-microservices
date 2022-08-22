@@ -9,7 +9,6 @@ export class Member {
     micState: boolean = false;
     screenShare: boolean = false;
     bot?: boolean;
-    guest?: boolean;
     speech?: {
         rate: number,
         pitch: number,
@@ -22,9 +21,6 @@ export class Member {
         this.name = data.name;
         this.avatar = data.avatar;
         this.socketId = socketId;
-        if (data.guest) {
-            this.guest = data.guest;
-        }
         if (data.bot) {
             this.bot = data.bot;
         }
@@ -40,7 +36,6 @@ export interface RegisterMemberData {
     name: string;
     avatar: string;
     bot?: boolean;
-    guest?: boolean;
     speech?: {
         rate: number,
         pitch: number,
