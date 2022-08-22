@@ -60,9 +60,7 @@ export class RoomService {
                 privateMode: room.privateMode,
                 membersCount: room.members.size,
                 invites: Array.from(room.invites),
-                guests: Array.from(room.members).map(([key, value]:[key: string, value: Member]) => value).filter((member: Member) => member.guest) || [],
             };
-            console.log(obj.guests);
             return obj;
         });
     }

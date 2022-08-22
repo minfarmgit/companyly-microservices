@@ -33,7 +33,6 @@ export interface RoomPrev {
     privateMode: boolean;
     membersCount: number;
     invites: string[];
-    guests: Member[];
 }
 
 export interface CreateRoomData {
