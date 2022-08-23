@@ -5,14 +5,16 @@
   "scripts": {
     "assistant:exec": "ts-node ./assistant/src/index.ts",
     "assistant:start": "npm run start --prefix ./assistant",
+    "email:exec": "ts-node ./email/src/server.ts",
+    "email:start": "npm run start --prefix ./email",
     "sync:exec": "ts-node ./sync/src/server.ts",
     "sync:start": "npm run start --prefix ./sync",
     "webrtc:exec": "ts-node ./webrtc/src/server.ts",
     "webrtc:start": "npm run start --prefix ./webrtc",
-    "postinstall": "npm install --prefix ./assistant && npm install --prefix ./sync && npm install --prefix ./webrtc",
+    "postinstall": "npm install --prefix ./assistant && npm install --prefix ./sync && npm install --prefix ./webrtc && npm install --prefix ./email",
     "dev": "nodemon",
-    "build": "npm run build --prefix ./assistant && npm run build --prefix ./sync && npm run build --prefix ./webrtc",
-    "start": "npm-run-all --parallel assistant:start sync:start webrtc:start"
+    "build": "npm run build --prefix ./assistant && npm run build --prefix ./sync && npm run build --prefix ./webrtc && npm build --prefix ./email",
+    "start": "npm-run-all --parallel assistant:start sync:start webrtc:start email:start"
   },
   "repository": {
     "type": "git",

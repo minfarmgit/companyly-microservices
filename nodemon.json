@@ -1,9 +1,9 @@
 {
-  "watch": ["assistant/src", "sync/src", "webrtc/src"],
+  "watch": ["assistant/src", "sync/src", "webrtc/src", "email/src"],
   "ext": "ts,json",
   "ignore": [
     "**/src/**/*.spec.ts",
     "assistant/aiTrainig/"
   ],
-  "exec": "npm-run-all --parallel assistant:exec sync:exec webrtc:exec"
+  "exec": "npm-run-all --parallel assistant:exec sync:exec webrtc:exec email:exec"
 }
