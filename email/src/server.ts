@@ -18,6 +18,6 @@ const server: SMTPServer = new SMTPServer({
     disabledCommands: ['AUTH']
 });
 
-server.listen(environment.emailPort, environment.emailHost, () => {
+server.listen(environment.emailPort, () => {
     console.log(`[Email] Server listening at port ${environment.emailPort}`);
 });
