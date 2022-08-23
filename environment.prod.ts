@@ -10,5 +10,8 @@ export const environment = {
 
   syncSocketPort: 3004,
   syncHttpPort: 3005,
+
+  emailHost: '51.250.25.163',
+  emailPort: 25,
 };
 

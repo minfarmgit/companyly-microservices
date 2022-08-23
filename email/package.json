@@ -18,6 +18,10 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "companyly-microservices": "file:.."
+    "@types/mailparser": "^3.4.0",
+    "@types/smtp-server": "^3.5.7",
+    "companyly-microservices": "file:..",
+    "mailparser": "^3.5.0",
+    "smtp-server": "^3.11.0"
   }
 }
