@@ -16,11 +16,12 @@ const server: SMTPServer = new SMTPServer({
     key: dev ? undefined : fs.readFileSync('/etc/letsencrypt/live/clikl.ru/privkey.pem', 'utf8'),
     cert: dev ? undefined : fs.readFileSync('/etc/letsencrypt/live/clikl.ru/cert.pem', 'utf8'),
     onData(stream: SMTPServerDataStream, session: SMTPServerSession, callback: any) {
+        console.log('[Email] ', stream);
         simpleParser(stream, {}, (err: any, parsed: ParsedMail) => {
-            if (err)
-                console.log("Error:" , err)
-
-            console.log(parsed)
+            if (err) {
+                console.log("[Email] Error:" , err);
+            }
+            console.log('[Email] ', parsed);
             stream.on("end", callback)
         });
 
