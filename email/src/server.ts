@@ -1,10 +1,12 @@
-import { SMTPServer } from 'smtp-server';
-import { simpleParser } from "mailparser";
+// @ts-ignore
+import { SMTPServer, SMTPServerDataStream, SMTPServerSession } from 'smtp-server';
+// @ts-ignore
+import { ParsedMail, simpleParser } from "mailparser";
 import { environment } from "./env";
 
-const server = new SMTPServer({
-    onData(stream, session, callback) {
-        simpleParser(stream, {}, (err, parsed) => {
+const server: SMTPServer = new SMTPServer({
+    onData(stream: SMTPServerDataStream, session: SMTPServerSession, callback: any) {
+        simpleParser(stream, {}, (err: any, parsed: ParsedMail) => {
             if (err)
                 console.log("Error:" , err)
 
