@@ -32,7 +32,7 @@ let transporter: Transporter<SMTPTransport.SentMessageInfo>;
 async function createTransporter(): Promise<any> {
     transporter = createTransport({
         host: 'smtp.gmail.com',
-        port: environment.emailPort,
+        port: 587,
         tls: {
           rejectUnauthorized: false,
         },
