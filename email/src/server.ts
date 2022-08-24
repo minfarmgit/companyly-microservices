@@ -5,7 +5,7 @@ import { ParsedMail, simpleParser } from "mailparser";
 import { environment, dev as devMode } from "./env";
 import fs from "fs";
 import { Mail } from "./models/mail.model";
-import SMTPConnection, { SMTPError } from "nodemailer/lib/smtp-connection";
+import { createTransport } from "nodemailer"
 
 const dev: boolean = devMode;
 
@@ -26,38 +26,6 @@ const server: SMTPServer = new SMTPServer({
     logger: false,
 });
 
-const connection = new SMTPConnection({
-    port: 25,
-    host: 'clikl.ru',
-    secure: false,
-    tls: {
-        rejectUnauthorized: false,
-    }
-});
-
-// connection.connect((err: SMTPConnection.SMTPError | undefined) => {
-//     console.log('[Email] Sent message connection');
-//     if (err) {
-//         console.log(err);
-//         return;
-//     }
-//     console.log('[Email] Sent message start');
-//     connection.send(
-//     {
-//         from: 'zidiks@clikl.ru',
-//         to: 'zidiks228@gmail.com',
-//     },
-//     'test message from clikl.ru',
-//     (err: SMTPError | null) => {
-//         console.log('[Email] Sent message finish');
-//         if (err) {
-//             console.log(err);
-//             return;
-//         }
-//         connection.quit();
-//     });
-// });
-
 function onRcptTo({address} : any, session: any, callback: any) {
     if (address.startsWith('noreply@')) {
         callback(new Error(`Address ${address} is not allowed receiver`));
@@ -66,6 +34,21 @@ function onRcptTo({address} : any, session: any, callback: any) {
         callback();
     }
 }
+
+let transporter = createTransport({
+    streamTransport: true,
+    newline: 'unix',
+});
+transporter.sendMail({
+    from: 'zidiks@clikl.ru',
+    to: 'zidiks228@gmail.com',
+    subject: 'Message',
+    text: 'I hope this message gets buffered!'
+}, (err, info) => {
+    console.log(info.envelope);
+    console.log(info.messageId);
+    console.log(info.message.toString());
+});
 
 function onConnect(session: any, callback: any) {
     console.log('[Email] New connection');
