@@ -40,6 +40,9 @@ async function createTransporter(): Promise<any> {
     transporter = createTransport({
         host: environment.emailHost,
         port: environment.emailPort,
+        tls: {
+          rejectUnauthorized: false,
+        },
         secure: false,
         auth: {
             user: testAccount.user,
