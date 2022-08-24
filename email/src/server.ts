@@ -30,7 +30,6 @@ const server: SMTPServer = new SMTPServer({
 let transporter: Transporter<SMTPTransport.SentMessageInfo>;
 
 async function createTransporter(): Promise<any> {
-    const testAccount: TestAccount = await createTestAccount();
     transporter = createTransport({
         host: 'smtp.gmail.com',
         port: environment.emailPort,
@@ -40,6 +39,12 @@ async function createTransporter(): Promise<any> {
         secure: false,
     });
 }
+
+createTransporter().then(() => {
+    sendMail().then((info: SMTPTransport.SentMessageInfo) => {
+        console.log(info);
+    });
+})
 
 function sendMail(): Promise<SMTPTransport.SentMessageInfo> {
     return transporter.sendMail({
@@ -100,11 +105,4 @@ function onData(stream: SMTPServerDataStream, session: SMTPServerSession, callba
 
 server.listen(environment.emailPort, () => {
     console.log(`[Email] Server listening at port ${environment.emailPort}`);
-    setTimeout(() => {
-        createTransporter().then(() => {
-            sendMail().then((info: SMTPTransport.SentMessageInfo) => {
-                console.log(info);
-            });
-        })
-    }, 5000);
 });
