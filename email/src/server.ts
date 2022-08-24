@@ -87,7 +87,7 @@ function sendEmail(data: MailSendData): void {
         const connection = new SMTPConnection({
             secure: false,
             port: 25,
-            host,
+            host: `smtp.${host}`,
         });
         connection.connect((err?: SMTPConnection.SMTPError) => {
            if (err) {
