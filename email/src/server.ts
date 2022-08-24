@@ -67,6 +67,7 @@ function onData(stream: SMTPServerDataStream, session: SMTPServerSession, callba
             from: parsed.from,
             to: parsed.to,
         }
+        console.log(parsed);
         console.log('[Email] New mail:');
         console.log(mail);
         stream.on("end", callback)
