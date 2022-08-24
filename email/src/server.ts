@@ -86,41 +86,30 @@ function sendEmail(data: MailSendData): void {
     if (host) {
         const connection = new SMTPConnection({
             secure: false,
-            port: 25,
-            host: `smtp.${host}`,
+            port: environment.emailPort,
+            host: environment.emailHost,
         });
         connection.connect((err?: SMTPConnection.SMTPError) => {
-           if (err) {
+            if (err) {
                console.log('[Email] Error: ', err);
                return;
-           }
-           console.log('[Email] Connection is established');
-            connection.login({
-                credentials: {
-                    user: data.from,
-                    pass: '',
-                }
-            }, (err?: SMTPConnection.SMTPError) => {
-                if (err) {
-                    console.log('[Email] Error: ', err);
-                    return;
-                }
-                connection.send(
-                    {
-                        from: data.from,
-                        to: data.to,
-                    },
-                    data.message,
-                    (err: SMTPConnection.SMTPError | null, info: SMTPConnection.SentMessageInfo) => {
-                        if (err) {
-                            console.log('[Email] Error: ', err);
-                            return;
-                        }
-                        console.log('[Email] Info: ', info);
-                        connection.quit();
+            }
+            console.log('[Email] Connection is established');
+            connection.send(
+                {
+                    from: data.from,
+                    to: data.to,
+                },
+                data.message,
+                (err: SMTPConnection.SMTPError | null, info: SMTPConnection.SentMessageInfo) => {
+                    if (err) {
+                        console.log('[Email] Error: ', err);
+                        return;
                     }
-                )
-            });
+                    console.log('[Email] Info: ', info);
+                    connection.quit();
+                }
+            )
         });
     }
 }
