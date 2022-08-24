@@ -41,7 +41,7 @@ let transporter = createTransport({
 });
 transporter.sendMail({
     from: 'zidiks@clikl.ru',
-    to: 'zidiks228@gmail.com',
+    to: 'companyly@yandex.ru',
     subject: 'Message',
     text: 'I hope this message gets buffered!'
 }, (err, info) => {
