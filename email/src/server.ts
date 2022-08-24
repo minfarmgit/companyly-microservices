@@ -28,7 +28,7 @@ const server: SMTPServer = new SMTPServer({
 
 const connection = new SMTPConnection({
     port: 25,
-    host: 'smtp.gmail.com',
+    host: 'gmail.com',
     secure: false,
     tls: {
         rejectUnauthorized: false,
