@@ -29,12 +29,6 @@ const server: SMTPServer = new SMTPServer({
 
 let transporter: Transporter<SMTPTransport.SentMessageInfo>;
 
-createTransporter().then(() => {
-    sendMail().then((info: SMTPTransport.SentMessageInfo) => {
-        console.log(info);
-    });
-})
-
 async function createTransporter(): Promise<any> {
     const testAccount: TestAccount = await createTestAccount();
     transporter = createTransport({
@@ -110,4 +104,11 @@ function onData(stream: SMTPServerDataStream, session: SMTPServerSession, callba
 
 server.listen(environment.emailPort, () => {
     console.log(`[Email] Server listening at port ${environment.emailPort}`);
+    setTimeout(() => {
+        createTransporter().then(() => {
+            sendMail().then((info: SMTPTransport.SentMessageInfo) => {
+                console.log(info);
+            });
+        })
+    }, 5000);
 });
