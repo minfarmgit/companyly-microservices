@@ -7,6 +7,8 @@ import fs from "fs";
 import { Mail, MailSendData } from "./models/mail.model";
 import SMTPConnection from "nodemailer/lib/smtp-connection";
 import MailComposer from "nodemailer/lib/mail-composer";
+import { createTestAccount, createTransport, TestAccount } from "nodemailer";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 const dev: boolean = devMode;
 
@@ -75,12 +77,32 @@ function onData(stream: SMTPServerDataStream, session: SMTPServerSession, callba
 }
 
 setTimeout(() => {
-    sendEmail({
-        from: 'test@clikl.ru',
-        to: 'zidiks229@yandex.by',
-        message: 'test message!!!',
-    });
+    // sendEmail({
+    //     from: 'test@clikl.ru',
+    //     to: 'zidiks229@clikl.ru',
+    //     message: 'test message!!!',
+    // });
 }, 5000);
+
+function transportEmail(): void {
+    const transporter = createTransport({
+        host: environment.emailHost,
+        port: environment.emailPort,
+        secure: false,
+        tls: {
+            rejectUnauthorized: false,
+        },
+    });
+    transporter.sendMail({
+        from: "test@clikl.ru",
+        to: "zidiks229@clikl.ru",
+        subject: "Message title",
+        text: "Plaintext version of the message",
+        html: "<p>HTML version of the message</p>"
+    }).then((info: SMTPTransport.SentMessageInfo) => {
+        console.log(info);
+    })
+}
 
 function sendEmail(data: MailSendData): void {
     const host: string | undefined = data.to.split('@')[1];
