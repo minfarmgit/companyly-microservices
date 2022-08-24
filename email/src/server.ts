@@ -17,6 +17,8 @@ const server: SMTPServer = new SMTPServer({
     cert: dev ? undefined : fs.readFileSync('/etc/letsencrypt/live/clikl.ru/cert.pem', 'utf8'),
     onData,
     onRcptTo,
+    onAuth,
+    onConnect,
     disabledCommands: ['AUTH'],
     authOptional: true,
     logger: true,
@@ -30,6 +32,21 @@ function onRcptTo({address} : any, session: any, callback: any) {
     else {
         callback();
     }
+}
+
+function onConnect(session: any, callback: any) {
+    console.log('[Email] New connection');
+    if (session.remoteAddress === "127.0.0.1") {
+        return callback(new Error("No connections from localhost allowed"));
+    }
+    return callback(); // Accept the connection
+}
+
+function onAuth(auth: any, session: any, callback: any) {
+    if (auth.username !== "abc" || auth.password !== "def") {
+        return callback(new Error("Invalid username or password"));
+    }
+    callback(null, { user: 123 }); // where 123 is the user id or similar property
 }
 
 function onData(stream: SMTPServerDataStream, session: SMTPServerSession, callback: any) {
