@@ -55,6 +55,7 @@ connection.connect((err: SMTPConnection.SMTPError | undefined) => {
             return;
         }
     });
+    connection.quit();
 });
 
 function onRcptTo({address} : any, session: any, callback: any) {
