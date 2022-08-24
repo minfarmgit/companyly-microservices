@@ -4,8 +4,8 @@ import { SMTPServer, SMTPServerDataStream, SMTPServerSession } from 'smtp-server
 import { ParsedMail, simpleParser } from "mailparser";
 import { environment, dev as devMode } from "./env";
 import fs from "fs";
-import { Mail } from "./models/mail.model";
-import { createTransport } from "nodemailer"
+import { Mail, MailSendData } from "./models/mail.model";
+import SMTPConnection from "nodemailer/lib/smtp-connection";
 
 const dev: boolean = devMode;
 
@@ -34,21 +34,6 @@ function onRcptTo({address} : any, session: any, callback: any) {
         callback();
     }
 }
-
-let transporter = createTransport({
-    streamTransport: true,
-    newline: 'unix',
-});
-transporter.sendMail({
-    from: 'zidiks@clikl.ru',
-    to: 'test@clikl.ru',
-    subject: 'Message',
-    text: 'I hope this message gets buffered!'
-}, (err, info) => {
-    console.log(info.envelope);
-    console.log(info.messageId);
-    console.log(info.message.toString());
-});
 
 function onConnect(session: any, callback: any) {
     console.log('[Email] New connection');
@@ -85,7 +70,48 @@ function onData(stream: SMTPServerDataStream, session: SMTPServerSession, callba
         console.log(mail);
         stream.on("end", callback)
     });
+}
 
+setTimeout(() => {
+    sendEmail({
+        from: 'test@clikl.ru',
+        to: 'zidiks229@yandex.by',
+        message: 'test message!!!',
+    });
+}, 5000);
+
+function sendEmail(data: MailSendData): void {
+    const host: string | undefined = data.to.split('@')[1];
+    console.log(`[Email] Host: mail.${host}`);
+    if (host) {
+        const connection = new SMTPConnection({
+            secure: false,
+            port: 25,
+            host: `mail.${host}`,
+        });
+        connection.connect((err?: SMTPConnection.SMTPError) => {
+           if (err) {
+               console.log('[Email] Error: ', err);
+               return;
+           }
+           console.log('[Email] Connection is established');
+           connection.send(
+               {
+                   from: data.from,
+                   to: data.to,
+               },
+               data.message,
+               (err: SMTPConnection.SMTPError | null, info: SMTPConnection.SentMessageInfo) => {
+                    if (err) {
+                        console.log('[Email] Error: ', err);
+                        return;
+                    }
+                    console.log('[Email] Info: ', info);
+                    connection.quit();
+               }
+           )
+        });
+    }
 }
 
 server.listen(environment.emailPort, () => {

@@ -11,3 +11,9 @@ export interface Mail {
         html: string | false;
     }
 }
+
+export interface MailSendData {
+    from: string;
+    to: string;
+    message: string;
+}
