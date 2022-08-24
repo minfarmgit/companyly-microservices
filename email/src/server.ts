@@ -4,6 +4,7 @@ import { SMTPServer, SMTPServerDataStream, SMTPServerSession } from 'smtp-server
 import { ParsedMail, simpleParser } from "mailparser";
 import { environment, dev as devMode } from "./env";
 import fs from "fs";
+import { Mail } from "./models/mail.model";
 
 const dev: boolean = devMode;
 
@@ -21,7 +22,7 @@ const server: SMTPServer = new SMTPServer({
     onConnect,
     disabledCommands: ['AUTH'],
     authOptional: true,
-    logger: true,
+    logger: false,
 });
 
 function onRcptTo({address} : any, session: any, callback: any) {
@@ -53,7 +54,18 @@ function onData(stream: SMTPServerDataStream, session: SMTPServerSession, callba
         if (err) {
             console.log("[Email] Error:" , err);
         }
-        console.log('[Email] Data: ', parsed);
+        const mail: Mail = {
+            attachments: parsed.attachments,
+            subject: parsed.subject,
+            date: parsed.date,
+            content: {
+                html: parsed.html,
+                text: parsed.text,
+            },
+            from: parsed.from,
+            to: parsed.to,
+        }
+        console.log('[Email] New mail: ', mail);
         stream.on("end", callback)
     });
 
