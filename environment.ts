@@ -12,5 +12,5 @@ export const environment = {
   syncHttpPort: 3005,
 
   emailHost: 'localhost',
-  emailPort: 465,
+  emailPort: 25,
 };
