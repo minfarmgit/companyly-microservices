@@ -12,7 +12,7 @@ if (dev) {
 }
 
 const server: SMTPServer = new SMTPServer({
-    secure: !dev,
+    secure: false,
     key: dev ? undefined : fs.readFileSync('/etc/letsencrypt/live/clikl.ru/privkey.pem', 'utf8'),
     cert: dev ? undefined : fs.readFileSync('/etc/letsencrypt/live/clikl.ru/cert.pem', 'utf8'),
     onData,
