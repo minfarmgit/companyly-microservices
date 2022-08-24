@@ -35,28 +35,28 @@ const connection = new SMTPConnection({
     }
 });
 
-connection.connect((err: SMTPConnection.SMTPError | undefined) => {
-    console.log('[Email] Sent message connection');
-    if (err) {
-        console.log(err);
-        return;
-    }
-    console.log('[Email] Sent message start');
-    connection.send(
-    {
-        from: 'zidiks@clikl.ru',
-        to: 'zidiks228@gmail.com',
-    },
-    'test message from clikl.ru',
-    (err: SMTPError | null) => {
-        console.log('[Email] Sent message finish');
-        if (err) {
-            console.log(err);
-            return;
-        }
-        connection.quit();
-    });
-});
+// connection.connect((err: SMTPConnection.SMTPError | undefined) => {
+//     console.log('[Email] Sent message connection');
+//     if (err) {
+//         console.log(err);
+//         return;
+//     }
+//     console.log('[Email] Sent message start');
+//     connection.send(
+//     {
+//         from: 'zidiks@clikl.ru',
+//         to: 'zidiks228@gmail.com',
+//     },
+//     'test message from clikl.ru',
+//     (err: SMTPError | null) => {
+//         console.log('[Email] Sent message finish');
+//         if (err) {
+//             console.log(err);
+//             return;
+//         }
+//         connection.quit();
+//     });
+// });
 
 function onRcptTo({address} : any, session: any, callback: any) {
     if (address.startsWith('noreply@')) {
