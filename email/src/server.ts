@@ -19,6 +19,7 @@ const server: SMTPServer = new SMTPServer({
     onRcptTo,
     disabledCommands: ['AUTH'],
     authOptional: true,
+    logger: true,
 });
 
 function onRcptTo({address} : any, session: any, callback: any) {
