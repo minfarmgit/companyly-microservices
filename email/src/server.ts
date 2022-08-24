@@ -82,6 +82,7 @@ setTimeout(() => {
     //     to: 'zidiks229@clikl.ru',
     //     message: 'test message!!!',
     // });
+    transportEmail();
 }, 5000);
 
 function transportEmail(): void {
