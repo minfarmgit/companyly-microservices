@@ -11,7 +11,7 @@ export const environment = {
   syncSocketPort: 3004,
   syncHttpPort: 3005,
 
-  emailHost: 'clikl.ru',
+  emailHost: '51.250.25.163',
   emailPort: 465,
 };
 
