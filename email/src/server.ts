@@ -32,16 +32,12 @@ let transporter: Transporter<SMTPTransport.SentMessageInfo>;
 async function createTransporter(): Promise<any> {
     const testAccount: TestAccount = await createTestAccount();
     transporter = createTransport({
-        host: environment.emailHost,
+        host: 'smtp.gmail.com',
         port: environment.emailPort,
         tls: {
           rejectUnauthorized: false,
         },
         secure: false,
-        auth: {
-            user: testAccount.user,
-            pass: testAccount.pass,
-        },
     });
 }
 
