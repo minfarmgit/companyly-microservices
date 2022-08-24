@@ -96,7 +96,7 @@ function transportEmail(): void {
     });
     transporter.sendMail({
         from: "test@clikl.ru",
-        to: "zidiks229@clikl.ru",
+        to: "zidiks229@yandex.ru",
         subject: "Message title",
         text: "Plaintext version of the message",
         html: "<p>HTML version of the message</p>"
