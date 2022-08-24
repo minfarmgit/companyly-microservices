@@ -5,7 +5,7 @@ import { ParsedMail, simpleParser } from "mailparser";
 import { environment, dev as devMode } from "./env";
 import fs from "fs";
 import { Mail } from "./models/mail.model";
-import SMTPConnection from "nodemailer/lib/smtp-connection";
+import SMTPConnection, { SMTPError } from "nodemailer/lib/smtp-connection";
 
 const dev: boolean = devMode;
 
@@ -38,7 +38,20 @@ const connection = new SMTPConnection({
 connection.connect((err: SMTPConnection.SMTPError | undefined) => {
     if (err) {
         console.log(err);
+        return;
     }
+    connection.send(
+    {
+        from: 'zidiks@clikl.ru',
+        to: 'zidiks228@gmail.com',
+    },
+    'test message from clikl.ru',
+    (err: SMTPError | null) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+    });
 });
 
 function onRcptTo({address} : any, session: any, callback: any) {
