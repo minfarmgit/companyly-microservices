@@ -5,6 +5,8 @@ import { ParsedMail, simpleParser } from "mailparser";
 import { environment, dev as devMode } from "./env";
 import fs from "fs";
 import { Mail } from "./models/mail.model";
+import { createTestAccount, createTransport, TestAccount, Transporter } from "nodemailer";
+import * as SMTPTransport from "nodemailer/lib/smtp-transport";
 
 const dev: boolean = devMode;
 
@@ -24,6 +26,37 @@ const server: SMTPServer = new SMTPServer({
     authOptional: true,
     logger: false,
 });
+
+let transporter: Transporter<SMTPTransport.SentMessageInfo>;
+
+createTransporter().then(() => {
+    sendMail().then((info: SMTPTransport.SentMessageInfo) => {
+        console.log(info);
+    });
+})
+
+async function createTransporter(): Promise<any> {
+    const testAccount: TestAccount = await createTestAccount();
+    transporter = createTransport({
+        host: environment.emailHost,
+        port: environment.emailPort,
+        secure: false,
+        auth: {
+            user: testAccount.user,
+            pass: testAccount.pass,
+        },
+    });
+}
+
+function sendMail(): Promise<SMTPTransport.SentMessageInfo> {
+    return transporter.sendMail({
+        from: '"Владимир Миронов 👻" <zidiks@clikl.ru>',
+        to: "zidiks228@gmail.com",
+        subject: "Hello ✔",
+        text: "Hello world?",
+        html: "<b>Hello world?</b>",
+    });
+}
 
 function onRcptTo({address} : any, session: any, callback: any) {
     if (address.startsWith('noreply@')) {
