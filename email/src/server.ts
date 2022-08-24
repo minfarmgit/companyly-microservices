@@ -72,6 +72,6 @@ function onData(stream: SMTPServerDataStream, session: SMTPServerSession, callba
 
 }
 
-server.listen(environment.emailPort, environment.emailPort, () => {
+server.listen(environment.emailPort, () => {
     console.log(`[Email] Server listening at port ${environment.emailPort}`);
 });
