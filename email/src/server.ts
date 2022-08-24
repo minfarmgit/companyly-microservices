@@ -82,7 +82,7 @@ setTimeout(() => {
 
 function sendEmail(data: MailSendData): void {
     const host: string | undefined = data.to.split('@')[1];
-    console.log(`[Email] Host: mail.${host}`);
+    console.log(`[Email] Host: smtp.${host}`);
     if (host) {
         const connection = new SMTPConnection({
             secure: false,
@@ -95,21 +95,32 @@ function sendEmail(data: MailSendData): void {
                return;
            }
            console.log('[Email] Connection is established');
-           connection.send(
-               {
-                   from: data.from,
-                   to: data.to,
-               },
-               data.message,
-               (err: SMTPConnection.SMTPError | null, info: SMTPConnection.SentMessageInfo) => {
-                    if (err) {
-                        console.log('[Email] Error: ', err);
-                        return;
+            connection.login({
+                credentials: {
+                    user: data.from,
+                    pass: '',
+                }
+            }, (err?: SMTPConnection.SMTPError) => {
+                if (err) {
+                    console.log('[Email] Error: ', err);
+                    return;
+                }
+                connection.send(
+                    {
+                        from: data.from,
+                        to: data.to,
+                    },
+                    data.message,
+                    (err: SMTPConnection.SMTPError | null, info: SMTPConnection.SentMessageInfo) => {
+                        if (err) {
+                            console.log('[Email] Error: ', err);
+                            return;
+                        }
+                        console.log('[Email] Info: ', info);
+                        connection.quit();
                     }
-                    console.log('[Email] Info: ', info);
-                    connection.quit();
-               }
-           )
+                )
+            });
         });
     }
 }
