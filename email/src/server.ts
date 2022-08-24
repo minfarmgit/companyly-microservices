@@ -88,6 +88,9 @@ function sendEmail(data: MailSendData): void {
             secure: false,
             port: environment.emailPort,
             host: environment.emailHost,
+            tls: {
+                rejectUnauthorized: false,
+            }
         });
         connection.connect((err?: SMTPConnection.SMTPError) => {
             if (err) {
