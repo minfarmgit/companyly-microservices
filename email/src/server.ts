@@ -6,6 +6,7 @@ import { environment, dev as devMode } from "./env";
 import fs from "fs";
 import { Mail, MailSendData } from "./models/mail.model";
 import SMTPConnection from "nodemailer/lib/smtp-connection";
+import MailComposer from "nodemailer/lib/mail-composer";
 
 const dev: boolean = devMode;
 
@@ -90,7 +91,8 @@ function sendEmail(data: MailSendData): void {
             host: environment.emailHost,
             tls: {
                 rejectUnauthorized: false,
-            }
+            },
+            debug: true,
         });
         connection.connect((err?: SMTPConnection.SMTPError) => {
             if (err) {
@@ -110,7 +112,7 @@ function sendEmail(data: MailSendData): void {
                         return;
                     }
                     console.log('[Email] Info: ', info);
-                    connection.quit();
+                    connection.close();
                 }
             )
         });
