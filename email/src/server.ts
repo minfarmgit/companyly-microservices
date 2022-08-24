@@ -25,7 +25,6 @@ const server: SMTPServer = new SMTPServer({
 });
 
 function onRcptTo({address} : any, session: any, callback: any) {
-    console.log('test');
     if (address.startsWith('noreply@')) {
         callback(new Error(`Address ${address} is not allowed receiver`));
     }
@@ -50,12 +49,11 @@ function onAuth(auth: any, session: any, callback: any) {
 }
 
 function onData(stream: SMTPServerDataStream, session: SMTPServerSession, callback: any) {
-    console.log('[Email] ', stream);
     simpleParser(stream, {}, (err: any, parsed: ParsedMail) => {
         if (err) {
             console.log("[Email] Error:" , err);
         }
-        console.log('[Email] ', parsed);
+        console.log('[Email] Data: ', parsed);
         stream.on("end", callback)
     });
 
