@@ -1,8 +1,6 @@
 #!/usr/bin/env node
-console.log('[Email] Create Server');
 
 'use strict';
-const nodemailer = require("nodemailer");
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = String(0);
 const path = require('path');
 const makePathJoin = () => path.join(process.env.HARAKA, 'node_modules');
@@ -85,28 +83,4 @@ logger.log('NOTICE', `Starting up Haraka version ${exports.version}`);
 
 server.createServer();
 
-setTimeout(() => {
-    // sendEmail().then(info => console.log("Message sent: %s", info.messageId));
-}, 10000);
 
-async function sendEmail() {
-    let transporter = nodemailer.createTransport({
-        host: 'mail.clikl.ru',
-        port: 25,
-        secure: false,
-        auth: {
-            user: 'companyly',
-            pass: '123',
-        },
-        tls: {
-            rejectUnauthorized: false,
-        }
-    });
-    return transporter.sendMail({
-        from: '"Fred Foo 👻" <zidiks@clikl.ru>',
-        to: "companyly@yandex.ru",
-        subject: "Hello ✔",
-        text: "Hello world?",
-        html: "<b>Hello world?</b>",
-    });
-}

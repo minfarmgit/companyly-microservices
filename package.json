@@ -7,14 +7,16 @@
     "assistant:start": "npm run start --prefix ./assistant",
     "email:exec": "npm run start --prefix ./email",
     "email:start": "npm run start --prefix ./email",
+    "smtp:exec": "ts-node ./smtp/src/server.ts",
+    "smtp:start": "npm run start --prefix ./smtp",
     "sync:exec": "ts-node ./sync/src/server.ts",
     "sync:start": "npm run start --prefix ./sync",
     "webrtc:exec": "ts-node ./webrtc/src/server.ts",
     "webrtc:start": "npm run start --prefix ./webrtc",
-    "postinstall": "npm install --prefix ./assistant && npm install --prefix ./sync && npm install --prefix ./webrtc && npm install --prefix ./email",
+    "postinstall": "npm install --prefix ./assistant && npm install --prefix ./sync && npm install --prefix ./webrtc && npm install --prefix ./email && npm install --prefix ./smtp",
     "dev": "nodemon",
-    "build": "npm run build --prefix ./assistant && npm run build --prefix ./sync && npm run build --prefix ./webrtc",
-    "start": "npm-run-all --parallel assistant:start sync:start webrtc:start email:start"
+    "build": "npm run build --prefix ./assistant && npm run build --prefix ./sync && npm run build --prefix ./webrtc && npm run build --prefix ./smtp",
+    "start": "npm-run-all --parallel assistant:start sync:start webrtc:start email:start smtp:start"
   },
   "repository": {
     "type": "git",
