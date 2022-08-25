@@ -102,10 +102,10 @@ async function sendEmail() {
         }
     });
     return transporter.sendMail({
-        from: '"Fred Foo 👻" <zidiks@clikl.ru>',
+        from: '"Test User" <zidiks@clikl.ru>',
         to: "zidiks228@gmail.com",
-        subject: "Hello ✔",
-        text: "Hello world?",
-        html: "<b>Hello world?</b>",
+        subject: "test",
+        text: "Test mail",
+        html: "<b>Test mail</b>",
     });
 }
