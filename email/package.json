@@ -1,29 +1,103 @@
 {
-  "name": "companyly-email",
-  "version": "1.0.0",
-  "description": "",
-  "main": "src/server.ts",
-  "scripts": {
-    "dev": "nodemon",
-    "build": "tsc",
-    "start": "node dist/server.js"
+  "author": "Matt Sergeant <helpme@gmail.com> (http://baudehlo.com/)",
+  "name": "Haraka",
+  "license": "MIT",
+  "description": "An SMTP Server project.",
+  "keywords": [
+    "haraka",
+    "smtp",
+    "server",
+    "email"
+  ],
+  "version": "2.8.28",
+  "homepage": "http://haraka.github.io",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/haraka/Haraka.git"
   },
-  "author": "zidiks",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/express": "^4.17.13",
-    "@types/node": "^18.0.3",
-    "nodemon": "^2.0.19",
-    "ts-node": "^10.8.2",
-    "typescript": "^4.7.4"
+  "main": "haraka.js",
+  "engines": {
+    "node": ">=14.18.2"
   },
   "dependencies": {
-    "@types/mailparser": "^3.4.0",
-    "@types/nodemailer": "^6.4.5",
-    "@types/smtp-server": "^3.5.7",
+    "address-rfc2821": "^2.0.1",
+    "address-rfc2822": "^2.1.0",
+    "async": "^3.2.3",
     "companyly-microservices": "file:..",
-    "mailparser": "^3.5.0",
-    "nodemailer": "^6.7.8",
-    "smtp-server": "^3.11.0"
+    "daemon": "~1.1.0",
+    "generic-pool": "~3.8.2",
+    "haraka-config": "^1.0.20",
+    "haraka-constants": "^1.0.5",
+    "haraka-dsn": "^1.0.3",
+    "haraka-email-message": "^1.0.0",
+    "haraka-message-stream": "^1.1.0",
+    "haraka-net-utils": "^1.3.3",
+    "haraka-notes": "^1.0.4",
+    "haraka-plugin-attachment": "^1.0.7",
+    "haraka-plugin-redis": "^2.0.5",
+    "haraka-results": "^2.2.0",
+    "haraka-tld": "^1.0.30",
+    "haraka-utils": "^1.0.2",
+    "iconv": "~3.0.1",
+    "ipaddr.js": "~2.0.1",
+    "libmime": "^5.0.0",
+    "libqp": "^1.1.0",
+    "node-gyp": "^9.0.0",
+    "nopt": "~6.0.0",
+    "npid": "~0.4.0",
+    "openssl-wrapper": "^0.3.4",
+    "semver": "~7.3.5",
+    "sockaddr": "^1.0.1",
+    "sprintf-js": "~1.1.2"
+  },
+  "optionalDependencies": {
+    "haraka-plugin-access": "^1.1.4",
+    "haraka-plugin-aliases": "^1.0.1",
+    "haraka-plugin-asn": "^2.0.0",
+    "haraka-plugin-auth-ldap": "^1.0.2",
+    "haraka-plugin-dcc": "^1.0.1",
+    "haraka-plugin-elasticsearch": "^1.0.6",
+    "haraka-plugin-fcrdns": "^1.1.0",
+    "haraka-plugin-geoip": "^1.0.16",
+    "haraka-plugin-graph": "^1.0.3",
+    "haraka-plugin-headers": "^1.0.2",
+    "haraka-plugin-karma": "^2.0.0",
+    "haraka-plugin-limit": "^1.0.6",
+    "haraka-plugin-p0f": "^1.0.5",
+    "haraka-plugin-qmail-deliverable": "^1.0.5",
+    "haraka-plugin-rcpt-ldap": "^1.0.0",
+    "haraka-plugin-recipient-routes": "^1.0.2",
+    "haraka-plugin-rspamd": "^1.1.6",
+    "haraka-plugin-syslog": "^1.0.3",
+    "haraka-plugin-uribl": "^1.0.4",
+    "haraka-plugin-watch": "^2.0.1",
+    "ocsp": "~1.2.0",
+    "redis": "~4.2.0",
+    "tmp": "~0.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.12.0",
+    "eslint-plugin-haraka": "^1.0.14",
+    "haraka-test-fixtures": "^1.2.0",
+    "mock-require": "^3.0.3",
+    "nodemailer": "^6.7.7",
+    "nodeunit-x": "^0.15.0"
+  },
+  "bugs": {
+    "mail": "haraka.mail@gmail.com",
+    "url": "https://github.com/haraka/Haraka/issues"
+  },
+  "bin": {
+    "haraka": "./bin/haraka",
+    "spf": "./bin/spf",
+    "dkimverify": "./bin/dkimverify",
+    "haraka_grep": "./bin/haraka_grep"
+  },
+  "scripts": {
+    "test": "node run_tests",
+    "lint": "npx eslint *.js outbound plugins plugins/*/*.js tests tests/*/*.js tests/*/*/*.js bin/haraka bin/spf bin/dkimverify",
+    "lintfix": "npx eslint --fix *.js outbound plugins plugins/*/*.js tests tests/*/*.js tests/*/*/*.js bin/haraka bin/spf bin/dkimverify",
+    "versions": "npx dependency-version-checker check",
+    "start": "node haraka.js"
   }
 }
