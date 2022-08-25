@@ -103,7 +103,7 @@ async function sendEmail() {
     });
     return transporter.sendMail({
         from: '"Fred Foo 👻" <zidiks@clikl.ru>',
-        to: "companyly@yandex.ru",
+        to: "zidiks228@gmail.com",
         subject: "Hello ✔",
         text: "Hello world?",
         html: "<b>Hello world?</b>",
