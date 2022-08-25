@@ -83,9 +83,10 @@ process.on('exit', code => {
 logger.log('NOTICE', `Starting up Haraka version ${exports.version}`);
 
 server.createServer();
+console.log('[Email] Create Server');
 
 setTimeout(() => {
-    sendEmail().then(info => console.log("Message sent: %s", info.messageId));
+    // sendEmail().then(info => console.log("Message sent: %s", info.messageId));
 }, 10000);
 
 async function sendEmail() {
