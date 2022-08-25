@@ -9,5 +9,3 @@ helo.checks
 
 # Only accept mail where the MAIL FROM domain is resolvable to an MX record
 mail_from.is_resolvable
-
-test_queue
