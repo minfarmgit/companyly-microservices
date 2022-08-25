@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 'use strict';
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = String(0);
 const path = require('path');
 const makePathJoin = () => path.join(process.env.HARAKA, 'node_modules');
 
@@ -82,5 +81,3 @@ process.on('exit', code => {
 logger.log('NOTICE', `Starting up Haraka version ${exports.version}`);
 
 server.createServer();
-
-
