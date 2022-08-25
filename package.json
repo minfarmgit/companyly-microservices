@@ -13,6 +13,7 @@
     "sync:start": "npm run start --prefix ./sync",
     "webrtc:exec": "ts-node ./webrtc/src/server.ts",
     "webrtc:start": "npm run start --prefix ./webrtc",
+    "mailMicroservice:start": "npm-run-all --parallel smtp:start email:start",
     "postinstall": "npm install --prefix ./assistant && npm install --prefix ./sync && npm install --prefix ./webrtc && npm install --prefix ./email && npm install --prefix ./smtp",
     "dev": "nodemon",
     "build": "npm run build --prefix ./assistant && npm run build --prefix ./sync && npm run build --prefix ./webrtc && npm run build --prefix ./smtp",
