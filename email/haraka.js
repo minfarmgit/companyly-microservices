@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+console.log('[Email] Create Server');
 
 'use strict';
 const nodemailer = require("nodemailer");
@@ -83,7 +84,6 @@ process.on('exit', code => {
 logger.log('NOTICE', `Starting up Haraka version ${exports.version}`);
 
 server.createServer();
-console.log('[Email] Create Server');
 
 setTimeout(() => {
     // sendEmail().then(info => console.log("Message sent: %s", info.messageId));
