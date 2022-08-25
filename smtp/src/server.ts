@@ -46,7 +46,7 @@ const smtpServer: SMTPServer = new SMTPServer({
     onRcptTo,
     onAuth,
     onConnect,
-    disabledCommands: ['AUTH'],
+    hideSTARTTLS: true,
     authOptional: true,
     logger: false,
 });
