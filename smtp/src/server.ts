@@ -62,9 +62,6 @@ function onRcptTo({address} : any, session: any, callback: any) {
 
 function onConnect(session: any, callback: any) {
     console.log('[Smtp] New connection');
-    if (session.remoteAddress === "127.0.0.1") {
-        return callback(new Error("No connections from localhost allowed"));
-    }
     return callback(); // Accept the connection
 }
 
