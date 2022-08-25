@@ -4,6 +4,9 @@ data.signatures
 # HELO
 helo.checks
 
+# AUTH plugins require TLS before AUTH is advertised
+auth/flat_file
+
 # Only accept mail where the MAIL FROM domain is resolvable to an MX record
 mail_from.is_resolvable
 
