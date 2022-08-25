@@ -90,7 +90,7 @@ setTimeout(() => {
 
 async function sendEmail() {
     let transporter = nodemailer.createTransport({
-        host: '51.250.25.163',
+        host: 'mail.clikl.ru',
         port: 25,
         secure: false,
         auth: {
