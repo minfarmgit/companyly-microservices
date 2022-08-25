@@ -1,4 +1,15 @@
 import { createTransport, Transporter } from "nodemailer";
+import { SMTPServer, SMTPServerDataStream, SMTPServerSession } from "smtp-server";
+import { environment, dev as devMode } from "./env"
+import * as fs from "fs";
+import { ParsedMail, simpleParser } from "mailparser";
+import { Mail } from "./models/mail.model";
+
+const dev: boolean = devMode;
+
+if (dev) {
+    console.log('[Smtp] Running in dev mode');
+}
 
 setTimeout(() => {
     // sendEmail().then(info => console.log("Message sent: %s", info.messageId));
@@ -26,3 +37,67 @@ async function sendEmail() {
         html: "<b>Hello world?</b>",
     });
 }
+
+const smtpServer: SMTPServer = new SMTPServer({
+    secure: false,
+    key: dev ? undefined : fs.readFileSync('/etc/letsencrypt/live/clikl.ru/privkey.pem', 'utf8'),
+    cert: dev ? undefined : fs.readFileSync('/etc/letsencrypt/live/clikl.ru/cert.pem', 'utf8'),
+    onData,
+    onRcptTo,
+    onAuth,
+    onConnect,
+    disabledCommands: ['AUTH'],
+    authOptional: true,
+    logger: false,
+});
+
+function onRcptTo({address} : any, session: any, callback: any) {
+    if (address.startsWith('noreply@')) {
+        callback(new Error(`Address ${address} is not allowed receiver`));
+    }
+    else {
+        callback();
+    }
+}
+
+function onConnect(session: any, callback: any) {
+    console.log('[Smtp] New connection');
+    if (session.remoteAddress === "127.0.0.1") {
+        return callback(new Error("No connections from localhost allowed"));
+    }
+    return callback(); // Accept the connection
+}
+
+function onAuth(auth: any, session: any, callback: any) {
+    if (auth.username !== "abc" || auth.password !== "def") {
+        return callback(new Error("Invalid username or password"));
+    }
+    callback(null, { user: 123 }); // where 123 is the user id or similar property
+}
+
+function onData(stream: SMTPServerDataStream, session: SMTPServerSession, callback: any) {
+    simpleParser(stream, {}, (err: any, parsed: ParsedMail) => {
+        if (err) {
+            console.log("[Smtp] Error:" , err);
+        }
+        const mail: Mail = {
+            attachments: parsed.attachments,
+            subject: parsed.subject,
+            date: parsed.date,
+            content: {
+                html: parsed.html,
+                text: parsed.text,
+            },
+            from: parsed.from,
+            to: parsed.to,
+        }
+        console.log(parsed);
+        console.log('[Smtp] New mail:');
+        console.log(mail);
+        stream.on("end", callback)
+    });
+}
+
+smtpServer.listen(environment.smtpPort, () => {
+    console.log(`[Smtp] Server listening at port ${environment.smtpPort}`);
+});
