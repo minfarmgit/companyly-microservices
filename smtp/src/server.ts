@@ -90,7 +90,7 @@ function onData(stream: SMTPServerDataStream, session: SMTPServerSession, callba
         }
         console.log('[Smtp] New mail:');
         console.log(mail);
-        stream.on("end", callback())
+        stream.on("end", callback)
     });
 }
 
