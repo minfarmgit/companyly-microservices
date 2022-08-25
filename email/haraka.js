@@ -103,7 +103,7 @@ async function sendEmail() {
     });
     return transporter.sendMail({
         from: '"Test User" <zidiks@clikl.ru>',
-        to: "zidiks228@gmail.com",
+        to: "inf@minfarm.by",
         subject: "test",
         text: "Test mail",
         html: "<b>Test mail</b>",
