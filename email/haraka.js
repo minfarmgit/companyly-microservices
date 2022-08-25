@@ -97,6 +97,9 @@ async function sendEmail() {
             user: 'companyly',
             pass: '123',
         },
+        tls: {
+            rejectUnauthorized: false,
+        }
     });
     return transporter.sendMail({
         from: '"Fred Foo 👻" <zidiks@clikl.ru>',
