@@ -1,7 +1,7 @@
 import { createTransport, Transporter } from "nodemailer";
 
 setTimeout(() => {
-    sendEmail().then(info => console.log("Message sent: %s", info.messageId));
+    // sendEmail().then(info => console.log("Message sent: %s", info.messageId));
 }, 10000);
 
 async function sendEmail() {
