@@ -104,7 +104,7 @@ export class SmtpService {
                                 html: `<span>${req.body.content}</span>`
                             }
                         }, req.body.user);
-                        res.sendStatus(200);
+                        res.send('Sent');
                     })
                     .catch((e) => res.sendStatus(500))
             } else {
