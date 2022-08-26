@@ -45,7 +45,7 @@ const smtpServer: SMTPServer = new SMTPServer({
 async function sendEmail() {
     return transporter.sendMail({
         from: '"Fred Foo 👻" <zidiks@clikl.ru>',
-        to: "companyly@clikl.ru",
+        to: "companyly@yandex.ru",
         subject: "Hello ✔",
         text: "Hello world?",
         html: "<b>Hello world?</b>",
