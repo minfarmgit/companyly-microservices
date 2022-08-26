@@ -9,6 +9,7 @@ import { MailsListDto } from "./dto/mails-list.dto";
 export class SmtpService {
 
     private connected: Map<string, string> = new Map();
+    private mailsList: Mail[] = [];
 
     constructor(
         private socketServer: Server,
@@ -20,8 +21,12 @@ export class SmtpService {
     }
 
     public processMail(mail: Mail): void {
-        console.log(mail);
-        console.log(mail.to);
+        console.log('[Smtp][Service] ', mail);
+        const userTo: string | undefined = mail.to?.value[0].address;
+        if (userTo) {
+            this.mailsList.push(mail);
+            this.updateMailList(userTo);
+        }
     }
 
     public updateMailList(user: string): void {
@@ -38,7 +43,10 @@ export class SmtpService {
     }
 
     private getInMails(user: string): Mail[] {
-        return [];
+        return this.mailsList.filter((mail: Mail) => {
+           const userTo: string | undefined = mail.to?.value[0].address;
+           return userTo === user;
+        });
     }
 
     private getOutMails(user: string): Mail[] {

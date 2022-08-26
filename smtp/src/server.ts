@@ -2,7 +2,7 @@ import { createTransport, Transporter } from "nodemailer";
 import { SMTPServer, SMTPServerDataStream, SMTPServerSession } from "smtp-server";
 import { environment, dev as devMode } from "./env"
 import * as fs from "fs";
-import { ParsedMail, simpleParser } from "mailparser";
+import { AddressObject, ParsedMail, simpleParser } from "mailparser";
 import { Mail } from "./models/mail.model";
 import express, { Express } from "express";
 import cors  from "cors";
@@ -97,10 +97,8 @@ function onData(stream: SMTPServerDataStream, session: SMTPServerSession, callba
                 text: parsed.text,
             },
             from: parsed.from,
-            to: parsed.to,
+            to: parsed.to as AddressObject,
         }
-        console.log('[Smtp] New mail:');
-        console.log(mail);
         smtpService.processMail(mail);
         callback(null, "Message queued");
         stream.on("end", () => {

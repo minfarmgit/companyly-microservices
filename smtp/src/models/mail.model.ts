@@ -3,7 +3,7 @@ import { AddressObject, Attachment } from "mailparser";
 export interface Mail {
     attachments: Attachment[],
     from: AddressObject | undefined;
-    to: AddressObject | AddressObject[] | undefined
+    to: AddressObject | undefined
     subject: string | undefined;
     date: Date | undefined;
     content: {
