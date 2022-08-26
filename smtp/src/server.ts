@@ -4,6 +4,20 @@ import { environment, dev as devMode } from "./env"
 import * as fs from "fs";
 import { ParsedMail, simpleParser } from "mailparser";
 import { Mail } from "./models/mail.model";
+import express, { Express } from "express";
+import cors  from "cors";
+import bodyParser from "body-parser";
+import { createServer as createServerHttp } from "http";
+import { createServer as createServerHttps } from "https";
+import { Server } from "socket.io";
+import { SmtpService } from "./smtp.service";
+
+const appSocket: Express = express();
+appSocket.use(cors());
+
+const appHttp: Express = express();
+appHttp.use(cors());
+appHttp.use(bodyParser.json());
 
 const dev: boolean = devMode;
 
@@ -11,22 +25,18 @@ if (dev) {
     console.log('[Smtp] Running in dev mode');
 }
 
-setTimeout(() => {
-    sendEmail().then(info => console.log("Message sent: %s", info.messageId));
-}, 10000);
-
 const transporter: Transporter = createTransport({
     host: 'mail.clikl.ru',
-    port: 25,
+    port: environment.emailPort,
     secure: false,
     auth: {
-        user: 'companyly',
-        pass: '123',
+        user: environment.emailLogin,
+        pass: environment.emailPassword,
     },
     tls: {
         rejectUnauthorized: false,
     },
-    debug: true,
+    debug: false,
 });
 
 const smtpServer: SMTPServer = new SMTPServer({
@@ -35,22 +45,29 @@ const smtpServer: SMTPServer = new SMTPServer({
     cert: dev ? undefined : fs.readFileSync('/etc/letsencrypt/live/clikl.ru/cert.pem', 'utf8'),
     onData,
     onRcptTo,
-    onAuth,
     onConnect,
     hideSTARTTLS: true,
     authOptional: true,
     logger: false,
 });
 
-async function sendEmail() {
-    return transporter.sendMail({
-        from: '"Fred Foo 👻" <zidiks@clikl.ru>',
-        to: "companyly@yandex.ru",
-        subject: "Hello ✔",
-        text: "Hello world?",
-        html: "<b>Hello world?</b>",
-    });
-}
+const serverSocket = dev ? createServerHttp(appSocket) : createServerHttps({
+    key: fs.readFileSync('/etc/letsencrypt/live/clikl.ru/privkey.pem', 'utf8'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/clikl.ru/cert.pem', 'utf8'),
+}, appSocket);
+
+const serverHttp = dev ? createServerHttp(appHttp) : createServerHttps({
+    key: fs.readFileSync('/etc/letsencrypt/live/clikl.ru/privkey.pem', 'utf8'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/clikl.ru/cert.pem', 'utf8'),
+}, appHttp);
+
+const io = new Server(serverSocket, {
+    cors: {
+        origin: '*',
+    },
+});
+
+const smtpService: SmtpService = new SmtpService(io, appHttp, transporter);
 
 function onRcptTo({address} : any, session: any, callback: any) {
     if (address.startsWith('noreply@')) {
@@ -63,14 +80,7 @@ function onRcptTo({address} : any, session: any, callback: any) {
 
 function onConnect(session: any, callback: any) {
     console.log('[Smtp] New connection');
-    return callback(); // Accept the connection
-}
-
-function onAuth(auth: any, session: any, callback: any) {
-    if (auth.username !== "abc" || auth.password !== "def") {
-        return callback(new Error("Invalid username or password"));
-    }
-    callback(null, { user: 123 }); // where 123 is the user id or similar property
+    return callback();
 }
 
 function onData(stream: SMTPServerDataStream, session: SMTPServerSession, callback: any) {
@@ -91,6 +101,7 @@ function onData(stream: SMTPServerDataStream, session: SMTPServerSession, callba
         }
         console.log('[Smtp] New mail:');
         console.log(mail);
+        smtpService.processMail(mail);
         callback(null, "Message queued");
         stream.on("end", () => {
             callback(null, "Message accepted");
@@ -98,6 +109,14 @@ function onData(stream: SMTPServerDataStream, session: SMTPServerSession, callba
     });
 }
 
-smtpServer.listen(environment.smtpPort, () => {
-    console.log(`[Smtp] Server listening at port ${environment.smtpPort}`);
+smtpServer.listen(environment.smtpServicePort, () => {
+    console.log(`[Smtp][Service] Server listening at port ${environment.smtpServicePort}`);
+});
+
+serverSocket.listen(environment.smtpSocketPort, () => {
+    console.log(`[Smtp][Socket] Server listening at port:${environment.smtpSocketPort}`);
+});
+
+serverHttp.listen(environment.smtpHttpPort, () => {
+    console.log(`[Smtp][Http] Server listening at port:${environment.smtpHttpPort}`);
 });

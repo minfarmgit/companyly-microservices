@@ -30,6 +30,7 @@
   },
   "homepage": "https://github.com/minfarmgit/companyly-microservices#readme",
   "devDependencies": {
+    "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/mailparser": "^3.4.0",
     "@types/node": "^18.0.3",

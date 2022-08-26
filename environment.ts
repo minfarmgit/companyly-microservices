@@ -13,7 +13,11 @@ export const environment = {
 
   emailHost: '51.250.25.163',
   emailPort: 25,
+  emailLogin: 'companyly',
+  emailPassword: '123',
 
   smtpHost: '51.250.25.163',
-  smtpPort: 3006,
+  smtpServicePort: 3006,
+  smtpHttpPort: 3007,
+  smtpSocketPort: 3008,
 };
