@@ -88,11 +88,12 @@ function onData(stream: SMTPServerDataStream, session: SMTPServerSession, callba
             from: parsed.from,
             to: parsed.to,
         }
-        stream.on("end", () => {
-            console.log('[Smtp] New mail:');
-            console.log(mail);
-            callback(null, "Message queued");
-        })
+        console.log('[Smtp] New mail:');
+        console.log(mail);
+        callback(null, "Message queued");
+        // stream.on("end", () => {
+        //
+        // })
     });
 }
 
