@@ -34,6 +34,7 @@ export class SmtpService {
 
     public updateMailList(user: string): void {
         if (this.connected.has(user)) {
+            console.log('[Smtp][Service] Emit Mails list for: ', user);
             this.socketServer.to(user).emit(ProtocolToClient.MAILS_LIST, null);
         }
     }
