@@ -20,12 +20,15 @@ export class SmtpService {
         this.listenHttp();
     }
 
-    public processMail(mail: Mail): void {
+    public processMail(mail: Mail, updateUser?: string): void {
         console.log('[Smtp][Service] ', mail);
         const userTo: string | undefined = mail.to?.value[0].address;
         if (userTo) {
             this.mailsList.push(mail);
             this.updateMailList(userTo);
+        }
+        if (updateUser) {
+            this.updateMailList(updateUser);
         }
     }
 
@@ -77,7 +80,25 @@ export class SmtpService {
             if (req.body) {
                 this.sendMail(req.body)
                     .then(() => {
-                        this.updateMailList(req.body.user);
+                        this.processMail({
+                            attachments: [],
+                            from: {
+                                value: [ {  address: req.body.from, name: req.body.user } ],
+                                html: `<span class="mp_address_group"><a href="mailto:${req.body.from}" class="mp_address_email">${req.body.from}</a></span>`,
+                                text: req.body.from,
+                            },
+                            to: {
+                                value: [ {  address: req.body.to, name: '' } ],
+                                html: `<span class="mp_address_group"><a href="mailto:${req.body.to}" class="mp_address_email">${req.body.to}</a></span>`,
+                                text: req.body.to,
+                            },
+                            subject: req.body.subject,
+                            date: new Date(),
+                            content: {
+                                text: req.body.content,
+                                html: `<span>${req.body.content}</span>`
+                            }
+                        }, req.body.user);
                         res.sendStatus(200);
                     })
                     .catch((e) => res.sendStatus(500))
