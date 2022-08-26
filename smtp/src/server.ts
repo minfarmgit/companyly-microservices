@@ -26,6 +26,7 @@ const transporter: Transporter = createTransport({
     tls: {
         rejectUnauthorized: false,
     },
+    debug: true,
 });
 
 const smtpServer: SMTPServer = new SMTPServer({
@@ -44,7 +45,7 @@ const smtpServer: SMTPServer = new SMTPServer({
 async function sendEmail() {
     return transporter.sendMail({
         from: '"Fred Foo 👻" <zidiks@clikl.ru>',
-        to: "zidiks228@gmail.com",
+        to: "companyly@yandex.ru",
         subject: "Hello ✔",
         text: "Hello world?",
         html: "<b>Hello world?</b>",
