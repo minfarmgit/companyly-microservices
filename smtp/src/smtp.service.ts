@@ -69,6 +69,7 @@ export class SmtpService {
     private listenSocket(): void {
         this.socketServer.on(SocketProtocol.connection, (socket: Socket) => {
             socket.on(ProtocolToServer.JOIN_CLIENT, (user: string) => {
+                console.log('[Smtp][Service] Connected socket user', this.connected);
                 this.connected.set(user, socket.id);
                 this.updateMailList(user);
             });
