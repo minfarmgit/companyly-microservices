@@ -26,7 +26,6 @@ const transporter: Transporter = createTransport({
     tls: {
         rejectUnauthorized: false,
     },
-    logger: true,
 });
 
 const smtpServer: SMTPServer = new SMTPServer({

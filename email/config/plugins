@@ -1,11 +1,18 @@
+# This file lists plugins that Haraka will run
+#
+# Plugin ordering often matters, run 'haraka -o -c /path/to/haraka/config'
+# to see the order plugins (and their hooks) will run in.
+#
+# To see a list of all plugins, run 'haraka -l'
+#
+# To see the help docs for a particular plugin, run 'haraka -h plugin.name'
+
 # block mails from known bad hosts (see config/dnsbl.zones for the DNS zones queried)
 dnsbl
 
-# allow bad mail signatures
-data.signatures
-
 # HELO
 helo.checks
+
 
 # AUTH plugins require TLS before AUTH is advertised
 auth/flat_file
@@ -22,3 +29,8 @@ queue/smtp_forward
 
 # Check mail headers are valid
 headers
+
+# allow bad mail signatures
+data.signatures
+
+#watch
