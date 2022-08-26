@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 'use strict';
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = String(0);
 const path = require('path');
 const makePathJoin = () => path.join(process.env.HARAKA, 'node_modules');
 
