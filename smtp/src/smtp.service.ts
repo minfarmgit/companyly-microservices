@@ -27,6 +27,7 @@ export class SmtpService {
             this.mailsList.push(mail);
             this.updateMailList(userTo);
         }
+        console.log('[Email][Service] Update user: ', updateUser);
         if (updateUser) {
             this.updateMailList(updateUser);
         }
@@ -104,7 +105,7 @@ export class SmtpService {
                                 html: `<span>${req.body.content}</span>`
                             }
                         }, req.body.user);
-                        res.send('Sent');
+                        res.end('Sent');
                     })
                     .catch((e) => res.sendStatus(500))
             } else {
