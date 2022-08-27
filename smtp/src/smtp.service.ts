@@ -58,7 +58,10 @@ export class SmtpService {
     }
 
     private getOutMails(user: string): Mail[] {
-        return [];
+        return this.mailsList.filter((mail: Mail) => {
+            const userFrom: string | undefined = mail.from?.value[0].address;
+            return userFrom === user;
+        });
     }
 
     private async sendMail(mail: MailDto): Promise<any> {
@@ -104,7 +107,7 @@ export class SmtpService {
                                 text: req.body.content,
                                 html: `<span>${req.body.content}</span>`
                             }
-                        }, req.body.user);
+                        }, req.body.from);
                         res.end('Sent');
                     })
                     .catch((e) => res.sendStatus(500))
