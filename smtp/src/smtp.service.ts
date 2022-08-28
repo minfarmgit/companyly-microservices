@@ -5,10 +5,11 @@ import { Transporter } from "nodemailer";
 import { MailDto } from "./dto/mail.dto";
 import { ProtocolToClient, ProtocolToServer, SocketProtocol } from "./protocol";
 import { MailsListDto } from "./dto/mails-list.dto";
+import { Member } from "./models/member.model";
 
 export class SmtpService {
 
-    private connected: Map<string, string> = new Map();
+    private connected: Map<string, Member> = new Map();
     private mailsList: Mail[] = [];
 
     constructor(
@@ -32,34 +33,34 @@ export class SmtpService {
         }
     }
 
-    public updateMailList(user: string): void {
-        if (this.connected.has(user)) {
-            console.log('[Smtp][Service] Emit Mails list for: ', user);
-            const socketId: string | undefined = this.connected.get(user);
+    public updateMailList(userMail: string): void {
+        if (this.connected.has(userMail)) {
+            console.log('[Smtp][Service] Emit Mails list for: ', userMail);
+            const socketId: string | undefined = this.connected.get(userMail)?.socketId;
             if (socketId) {
                 this.socketServer.to(socketId).emit(ProtocolToClient.MAILS_LIST, null);
             }
         }
     }
 
-    private getAllMails(user: string): MailsListDto {
+    private getAllMails(userMail: string): MailsListDto {
       return {
-          in: this.getInMails(user),
-          out: this.getOutMails(user),
+          in: this.getInMails(userMail),
+          out: this.getOutMails(userMail),
       }
     }
 
-    private getInMails(user: string): Mail[] {
+    private getInMails(userMail: string): Mail[] {
         return this.mailsList.filter((mail: Mail) => {
            const userTo: string | undefined = mail.to?.value[0].address;
-           return userTo === user;
+           return userTo === userMail;
         });
     }
 
-    private getOutMails(user: string): Mail[] {
+    private getOutMails(userMail: string): Mail[] {
         return this.mailsList.filter((mail: Mail) => {
             const userFrom: string | undefined = mail.from?.value[0].address;
-            return userFrom === user;
+            return userFrom === userMail;
         });
     }
 
@@ -76,18 +77,21 @@ export class SmtpService {
     private listenSocket(): void {
         this.socketServer.on(SocketProtocol.connection, (socket: Socket) => {
             socket.on(SocketProtocol.disconnect, () => {
-                const user: [string, string] | undefined = Array.from(this.connected.entries()).find(([key, value]: [string, string]) => {
-                    return socket.id === value
+                const user: [string, Member] | undefined = Array.from(this.connected.entries()).find(([key, value]: [string, Member]) => {
+                    return socket.id === value.socketId
                 });
                 if (user) {
                     this.connected.delete(user[0]);
                 }
             });
 
-            socket.on(ProtocolToServer.JOIN_CLIENT, (user: string) => {
+            socket.on(ProtocolToServer.JOIN_CLIENT, (userMail: string, userId: string) => {
                 console.log('[Smtp][Service] Connected socket user', this.connected);
-                this.connected.set(user, socket.id);
-                this.updateMailList(user);
+                this.connected.set(userMail, {
+                    socketId: socket.id,
+                    userId,
+                });
+                this.updateMailList(userMail);
             });
         });
     }
