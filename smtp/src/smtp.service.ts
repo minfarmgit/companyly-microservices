@@ -6,8 +6,10 @@ import { MailDto } from "./dto/mail.dto";
 import { ProtocolToClient, ProtocolToServer, SocketProtocol } from "./protocol";
 import { MailsListDto } from "./dto/mails-list.dto";
 import { Member } from "./models/member.model";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { environment } from "./env";
+
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = String(0);
 
 export class SmtpService {
 
@@ -29,6 +31,17 @@ export class SmtpService {
         if (userTo) {
             this.mailsList.push(mail);
             this.updateMailList(userTo);
+            if (this.connected.has(userTo)) {
+                const member: Member | undefined = this.connected.get(userTo);
+                setTimeout(() => {
+                    if (member) {
+                        axios.post(`${environment.host}:${environment.syncHttpPort}/email_message`, {
+                            toUserId: member.userId,
+                            message: userTo,
+                        });
+                    }
+                }, 1500);
+            }
         }
         if (updateUser) {
             this.updateMailList(updateUser);
@@ -41,12 +54,6 @@ export class SmtpService {
             const member: Member | undefined = this.connected.get(userMail);
             if (member) {
                 this.socketServer.to(member.socketId).emit(ProtocolToClient.MAILS_LIST, null);
-                setTimeout(() => {
-                    axios.post(`${environment.host}:${environment.syncHttpPort}/email_message`, {
-                        toUserId: member.userId,
-                        message: userMail,
-                    });
-                }, 1500);
             }
         }
     }
