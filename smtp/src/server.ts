@@ -12,6 +12,8 @@ import { createServer as createServerHttps } from "https";
 import { Server } from "socket.io";
 import { SmtpService } from "./smtp.service";
 
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = String(0);
+
 const appSocket: Express = express();
 appSocket.use(cors());
 
