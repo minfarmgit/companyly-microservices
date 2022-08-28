@@ -6,6 +6,8 @@ import { MailDto } from "./dto/mail.dto";
 import { ProtocolToClient, ProtocolToServer, SocketProtocol } from "./protocol";
 import { MailsListDto } from "./dto/mails-list.dto";
 import { Member } from "./models/member.model";
+import axios, { AxiosResponse } from "axios";
+import { environment } from "./env";
 
 export class SmtpService {
 
@@ -36,9 +38,15 @@ export class SmtpService {
     public updateMailList(userMail: string): void {
         if (this.connected.has(userMail)) {
             console.log('[Smtp][Service] Emit Mails list for: ', userMail);
-            const socketId: string | undefined = this.connected.get(userMail)?.socketId;
-            if (socketId) {
-                this.socketServer.to(socketId).emit(ProtocolToClient.MAILS_LIST, null);
+            const member: Member | undefined = this.connected.get(userMail);
+            if (member) {
+                this.socketServer.to(member.socketId).emit(ProtocolToClient.MAILS_LIST, null);
+                setTimeout(() => {
+                    axios.post(`${environment.host}:${environment.syncHttpPort}/email_message`, {
+                        toUserId: member.userId,
+                        message: userMail,
+                    });
+                }, 1500);
             }
         }
     }
