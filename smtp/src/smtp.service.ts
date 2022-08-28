@@ -27,7 +27,6 @@ export class SmtpService {
             this.mailsList.push(mail);
             this.updateMailList(userTo);
         }
-        console.log('[Email][Service] Update user: ', updateUser);
         if (updateUser) {
             this.updateMailList(updateUser);
         }
@@ -76,6 +75,15 @@ export class SmtpService {
 
     private listenSocket(): void {
         this.socketServer.on(SocketProtocol.connection, (socket: Socket) => {
+            socket.on(SocketProtocol.disconnect, () => {
+                const user: [string, string] | undefined = Array.from(this.connected.entries()).find(([key, value]: [string, string]) => {
+                    return socket.id === value
+                });
+                if (user) {
+                    this.connected.delete(user[0]);
+                }
+            });
+
             socket.on(ProtocolToServer.JOIN_CLIENT, (user: string) => {
                 console.log('[Smtp][Service] Connected socket user', this.connected);
                 this.connected.set(user, socket.id);
