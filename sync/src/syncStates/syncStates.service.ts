@@ -4,6 +4,8 @@ import { Server, Socket } from "socket.io";
 import { Express, Request } from "express";
 import { Paths } from "../paths";
 import { MeetingInviteDto } from "./dto/meeting-invite.dto";
+import { EmailMessageDto } from "./dto/email-message.dto";
+import { ChatMessageDto } from "./dto/chat-message.dto";
 
 export class SyncStatesService {
     private socketServer: Server;
@@ -45,6 +47,20 @@ export class SyncStatesService {
             const invitedMember: Member | undefined = this.members.get(req.body.toUserId.toString());
             if (invitedMember) {
                 this.emitServerMessage<MeetingInviteDto>(ServerMessageTypes.MEETING_INVITE, invitedMember.socketId, req.body);
+            }
+            res.sendStatus(200);
+        });
+        this.httpServer.post(`/${Paths.EMAIL_MESSAGE}`, (req: Request<any, any, EmailMessageDto>, res) => {
+            const toMember: Member | undefined = this.members.get(req.body.toUserId.toString());
+            if (toMember) {
+                this.emitServerMessage<EmailMessageDto>(ServerMessageTypes.EMAIL_MESSAGE, toMember.socketId, req.body);
+            }
+            res.sendStatus(200);
+        });
+        this.httpServer.post(`/${Paths.CHAT_MESSAGE}`, (req: Request<any, any, ChatMessageDto>, res) => {
+            const toMember: Member | undefined = this.members.get(req.body.toUserId.toString());
+            if (toMember) {
+                this.emitServerMessage<ChatMessageDto>(ServerMessageTypes.CHAT_MESSAGE, toMember.socketId, req.body);
             }
             res.sendStatus(200);
         });
