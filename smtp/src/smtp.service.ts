@@ -31,17 +31,15 @@ export class SmtpService {
         if (userTo) {
             this.mailsList.push(mail);
             this.updateMailList(userTo);
-            if (this.connected.has(userTo)) {
-                const member: Member | undefined = this.connected.get(userTo);
-                setTimeout(() => {
-                    if (member) {
-                        axios.post(`${environment.host}:${environment.syncHttpPort}/email_message`, {
-                            toUserId: member.userId,
-                            message: userTo,
-                        });
-                    }
-                }, 1500);
-            }
+            const member: Member | undefined = this.connected.get(userTo);
+            setTimeout(() => {
+                if (member) {
+                    axios.post(`${environment.host}:${environment.syncHttpPort}/email_message`, {
+                        toUserId: member.userId,
+                        message: userTo,
+                    });
+                }
+            }, 1500);
         }
         if (updateUser) {
             this.updateMailList(updateUser);
