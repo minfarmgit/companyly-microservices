@@ -4,6 +4,7 @@ ADD . .
 RUN npm install
 RUN npm run build
 RUN npm prune --production
+RUN npm install -g npm-run-all
 EXPOSE 3001
 EXPOSE 3002
 EXPOSE 3004
