@@ -1,0 +1,19 @@
+name: companyly-microservices CI/CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@v5
+        with:
+          registry: docker.pkg.github.com
+          name: minfarmgit/companyly-microservices/image
+          username: ${{ github.actor }}
+          password: ${{ secrets.CI_CD_TOKEN }}
+          tags: 'production'
