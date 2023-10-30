@@ -33,10 +33,12 @@ export class InviteMemberAction extends Action {
                         Authorization: 'Bearer ' + config.botToken,
                     }
                 }).then((res: AxiosResponse<UserProfile[]>) => {
+                    console.log(res);
                     const profilesList: UserProfile[] = res.data;
                     const namesList: string[] = profilesList.map((profile: UserProfile) => `${profile.firstName} ${profile.lastName}`.trim());
                     const bestMatch: BestMatch = findBestMatch(context, namesList);
-                    if (bestMatch.bestMatch.rating > 0.6) {
+                    console.log(bestMatch);
+                    if (bestMatch.bestMatch.rating > 0.4) {
                         const invUser: UserProfile = profilesList[bestMatch.bestMatchIndex];
                         const invites: string[] = room.roomValue.invites;
                         invites.push(invUser.userId.toString());
