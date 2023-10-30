@@ -1,7 +1,7 @@
 FROM node:16.14
 WORKDIR /opt/app
 ADD package.json package.json
-ADD /assistant/package.json /assistant/package.json
+COPY /assistant/package.json /assistant/package.json
 RUN npm install
 ADD . .
 RUN npm run build
