@@ -27,7 +27,8 @@ appSocket.use(cors());
 const appPeer: Express = express();
 appPeer.use(cors());
 
-const dev: boolean = devMode;
+// const dev: boolean = devMode;
+const dev: boolean = true;
 
 if (dev) {
     console.log('[Webrtc][All] Running in dev mode');

@@ -21,7 +21,8 @@ const appHttp: Express = express();
 appHttp.use(cors());
 appHttp.use(bodyParser.json());
 
-const dev: boolean = devMode;
+// const dev: boolean = devMode;
+const dev: boolean = true;
 
 if (dev) {
     console.log('[Smtp] Running in dev mode');
